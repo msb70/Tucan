@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useLang } from "@/context/LanguageContext";
 import { EVENTS, WHATSAPP_NUMBER } from "@/lib/data";
 import { Calendar, MapPin, Clock, MessageCircle, Tag } from "lucide-react";
@@ -65,10 +66,12 @@ export default function EventosPage() {
           transition={{ duration: 1, delay: 0.2 }}
           className="relative h-72 rounded-3xl overflow-hidden mb-24 border border-white/5 shadow-2xl group"
         >
-          <img
+          <Image
             src="/beer_glass.png"
             alt="Events"
-            className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-[3s]"
+            fill
+            sizes="(min-width: 1024px) 900px, 100vw"
+            className="object-cover transition-transform duration-[3s] group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-[#0D0F14]/85 bg-gradient-to-r from-[#0D0F14]/90 to-transparent" />
           <div className="absolute inset-0 flex items-center justify-center text-center px-4">

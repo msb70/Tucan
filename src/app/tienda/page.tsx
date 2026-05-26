@@ -1,92 +1,104 @@
 "use client";
+
 import { useState } from "react";
+import { Check, MessageCircle, Package, Search, Shirt, ShoppingBag, Star, Truck } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { STORE_ITEMS, WHATSAPP_NUMBER, type StoreItem } from "@/lib/data";
-import { MessageCircle, Package, ShoppingBag, Shirt } from "lucide-react";
-import { motion } from "framer-motion";
+import { StoreProductVisual } from "@/components/ProductVisual";
 
 type StoreTab = "all" | "beer" | "pack" | "merch";
 
-const itemGradients: Record<string, string> = {
-  "beer-honey": "from-yellow-600 via-amber-400 to-yellow-300",
-  "beer-electric": "from-yellow-400 via-orange-400 to-pink-500",
-  "beer-banana": "from-amber-700 via-yellow-600 to-amber-400",
-  "pack-tropical": "from-purple-700 via-orange-500 to-yellow-400",
-  "pack-discovery": "from-[#3F6B2A] via-[#D9A320] to-[#E86A17]",
-  "merch-glass": "from-slate-700 via-slate-500 to-slate-400",
-  "merch-shirt": "from-[#1D3515] via-[#3F6B2A] to-[#D9A320]",
-  "merch-stickers": "from-[#A92118] via-[#E86A17] to-[#D9A320]",
+const reviews: Record<string, { rating: number; count: number; quote: { es: string; en: string } }> = {
+  "chuzo-honey-single": { rating: 4.8, count: 37, quote: { es: "Suave, fresca y perfecta para repetir.", en: "Smooth, fresh and easy to repeat." } },
+  "besito-single": { rating: 4.9, count: 29, quote: { es: "Ácida, tropical y con final eléctrico.", en: "Sour, tropical and electric finish." } },
+  "banana-single": { rating: 4.7, count: 24, quote: { es: "Huele a pan de banana real.", en: "Smells like real banana bread." } },
+  "tropical-sour-pack": { rating: 4.9, count: 42, quote: { es: "El pack más divertido para probar.", en: "The most fun tasting pack." } },
+  "discovery-pack": { rating: 5.0, count: 51, quote: { es: "Ideal para conocer la marca completa.", en: "Ideal to discover the full brand." } },
+  "vaso-pinta": { rating: 4.6, count: 18, quote: { es: "Pesado, bonito y se siente premium.", en: "Heavy, beautiful and premium." } },
+  "camisa-tucan": { rating: 4.8, count: 33, quote: { es: "El logo se ve brutal en negro y verde.", en: "The logo looks great in black and green." } },
+  "sticker-pack": { rating: 4.7, count: 21, quote: { es: "Buenos colores y resistente al agua.", en: "Great colors and water resistant." } },
 };
 
-const itemEmojis: Record<string, string> = {
-  "beer-honey": "🍯",
-  "beer-electric": "⚡",
-  "beer-banana": "🍌",
-  "pack-tropical": "🌴",
-  "pack-discovery": "🎁",
-  "merch-glass": "🍺",
-  "merch-shirt": "👕",
-  "merch-stickers": "🎨",
-};
+function Stars({ rating }: { rating: number }) {
+  return (
+    <div className="flex items-center gap-0.5 text-[#F5C542]">
+      {Array.from({ length: 5 }).map((_, index) => (
+        <Star key={index} size={14} className={index < Math.round(rating) ? "fill-current" : "opacity-35"} />
+      ))}
+    </div>
+  );
+}
 
 function StoreCard({ item }: { item: StoreItem }) {
   const { lang, t } = useLang();
-  const gradient = itemGradients[item.image] || "from-[#D9A320] to-[#E86A17]";
-  const emoji = itemEmojis[item.image] || "🍺";
-
+  const review = reviews[item.id] ?? reviews["chuzo-honey-single"];
   const waMessage = encodeURIComponent(
     lang === "es"
       ? `Hola! Me interesa: ${t(item.name)}. ¿Cómo puedo pedirlo?`
       : `Hi! I'm interested in: ${t(item.name)}. How can I order it?`
   );
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`;
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden card-glow flex flex-col">
-      {/* Visual */}
-      <div className={`relative bg-gradient-to-br ${gradient} h-44 flex items-center justify-center overflow-hidden`}>
-        {item.badge && (
-          <div className="absolute top-3 right-3">
-            <span className="badge-limited text-xs px-2.5 py-1 rounded-full">
-              {t(item.badge)}
-            </span>
+    <article className="flex h-full flex-col overflow-hidden border border-[#F2E3C6]/10 bg-[#11151A] shadow-[0_18px_60px_rgba(0,0,0,0.32)] transition-transform hover:-translate-y-1 hover:border-[#D9A320]/45">
+      <StoreProductVisual item={item} />
+      <div className="flex flex-1 flex-col p-5">
+        <div className="mb-3 flex items-start justify-between gap-4">
+          <div>
+            <h3 className="font-display text-2xl leading-tight text-[#F7E9C9] sm:text-3xl">
+              {t(item.name)}
+            </h3>
+            <div className="mt-2 flex items-center gap-2">
+              <Stars rating={review.rating} />
+              <span className="text-xs font-semibold text-[#F2E3C6]/52">
+                {review.rating.toFixed(1)} ({review.count})
+              </span>
+            </div>
           </div>
-        )}
-        <div className="text-7xl">{emoji}</div>
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#1A1E26] to-transparent" />
-      </div>
-
-      <div className="p-5 flex flex-col flex-1">
-        <div className="flex items-start justify-between mb-2">
-          <h3
-            className="font-display text-xl text-[#F2E3C6]"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-          >
-            {t(item.name)}
-          </h3>
           <div className="text-right">
-            {item.originalPrice && (
-              <p className="text-xs text-[#F2E3C6]/30 line-through">${item.originalPrice}</p>
-            )}
-            <p className="text-[#D9A320] font-bold text-lg">${item.price}</p>
+            {item.originalPrice && <p className="text-xs text-[#F2E3C6]/32 line-through">${item.originalPrice}</p>}
+            <p className="text-2xl font-bold text-[#D9A320]">${item.price}</p>
           </div>
         </div>
 
-        <p className="text-[#F2E3C6]/60 text-sm leading-relaxed flex-1 mb-4">
+        <p className="mb-4 line-clamp-3 text-sm leading-7 text-[#F2E3C6]/62">
           {t(item.description)}
         </p>
 
-        <a
-          href={waUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 bg-[#25D366] text-white font-semibold py-3 rounded-xl hover:bg-[#20c05b] transition-all text-sm"
-        >
-          <MessageCircle size={16} />
-          {lang === "es" ? "Pedir por WhatsApp" : "Order on WhatsApp"}
-        </a>
+        {item.image === "merch-shirt" && (
+          <div className="mb-4 flex items-center gap-2">
+            {["#11151A", "#F2E3C6", "#3F6B2A", "#A92118"].map((color) => (
+              <span key={color} className="h-5 w-5 rounded-full border border-[#F2E3C6]/35" style={{ background: color }} />
+            ))}
+            <span className="ml-2 text-xs text-[#F2E3C6]/48">{lang === "es" ? "4 colores" : "4 colors"}</span>
+          </div>
+        )}
+
+        {item.image === "merch-stickers" && (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {["Logo", "Batch 005", "Tropical", "Sour", "Lab"].map((label) => (
+              <span key={label} className="border border-[#D9A320]/25 px-2.5 py-1 text-[0.64rem] font-bold uppercase tracking-[0.14em] text-[#D9A320]">
+                {label}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-auto border-t border-[#F2E3C6]/10 pt-4">
+          <blockquote className="mb-4 text-sm italic leading-6 text-[#F2E3C6]/55">
+            “{review.quote[lang]}”
+          </blockquote>
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-12 items-center justify-center gap-2 bg-[#25D366] px-4 text-sm font-bold text-white hover:bg-[#20c05b]"
+          >
+            <MessageCircle size={16} />
+            {lang === "es" ? "Pedir por WhatsApp" : "Order on WhatsApp"}
+          </a>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -101,8 +113,7 @@ export default function TiendaPage() {
     { value: "merch" as const, icon: <Shirt size={16} />, es: "Merch", en: "Merch" },
   ];
 
-  const filtered = tab === "all" ? STORE_ITEMS : STORE_ITEMS.filter((i) => i.type === tab);
-
+  const filtered = tab === "all" ? STORE_ITEMS : STORE_ITEMS.filter((item) => item.type === tab);
   const waInquiry = encodeURIComponent(
     lang === "es"
       ? "Hola! Quiero saber sobre los productos de Tucán Brewery."
@@ -110,143 +121,102 @@ export default function TiendaPage() {
   );
 
   return (
-    <div className="pt-32 pb-44 px-4 md:px-8 max-w-[1400px] mx-auto">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <p className="text-[#D9A320] text-xs uppercase tracking-[0.3em] font-semibold mb-4">Tucán Brewery</p>
-          <h1
-            className="text-6xl sm:text-8xl font-display text-[#F2E3C6] tracking-wide"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-          >
-            {lang === "es" ? "Tienda" : "Shop"}
-          </h1>
-          <div className="divider-gold max-w-sm mx-auto mt-6 mb-6" />
-          <p className="text-[#F2E3C6]/60 mt-3 max-w-lg mx-auto text-lg font-light leading-relaxed">
-            {lang === "es"
-              ? "Cervezas, packs y merch. Los pedidos se hacen por WhatsApp — rápido, directo y humano."
-              : "Beers, packs and merch. Orders placed via WhatsApp — quick, direct and human."}
-          </p>
-        </motion.div>
-
-        {/* WhatsApp CTA banner */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-14 p-6 sm:p-8 rounded-3xl bg-[#1D2415]/80 border border-[#25D366]/20 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl"
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#25D366]/15 flex items-center justify-center animate-pulse">
-              <MessageCircle size={24} className="text-[#25D366]" />
-            </div>
-            <div>
-              <p className="text-[#F2E3C6] font-semibold text-lg">
-                {lang === "es"
-                  ? "¿Tienes preguntas sobre los lotes?"
-                  : "Have questions about the batches?"}
-              </p>
-              <p className="text-[#F2E3C6]/60 text-sm font-light mt-0.5">
-                {lang === "es"
-                  ? "Escríbenos directo y coordinamos tu entrega en minutos."
-                  : "Message us directly and we will coordinate your delivery in minutes."}
-              </p>
-            </div>
+    <div className="route-page min-h-screen bg-[#080A0E]">
+      <section className="route-pad border-b border-[#F2E3C6]/10 bg-[#11151A] py-12">
+        <div className="mx-auto grid max-w-[1500px] gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <span className="section-label">Tucán Marketplace</span>
+            <h1 className="font-display text-6xl leading-none text-[#F7E9C9] sm:text-7xl">
+              {lang === "es" ? "Tienda" : "Shop"}
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-[#F2E3C6]/66">
+              {lang === "es"
+                ? "Cervezas, packs y merch con compra directa por WhatsApp. Formato rápido, ordenado y fácil de comparar."
+                : "Beers, packs and merch with direct WhatsApp ordering. Fast, organized and easy to compare."}
+            </p>
           </div>
+
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waInquiry}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#25D366] text-white font-bold px-8 py-3.5 rounded-full text-xs hover:bg-[#20c05b] hover:shadow-xl hover:shadow-[#25D366]/15 transition-all whitespace-nowrap uppercase tracking-wider"
-          >
-            {lang === "es" ? "Chatear ahora" : "Chat now"}
-          </a>
-        </motion.div>
-
-        {/* Tabs */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-wrap gap-2.5 mb-12 justify-center"
-        >
-          {tabs.map((t) => (
-            <button
-              key={t.value}
-              onClick={() => setTab(t.value)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold tracking-wide uppercase transition-all ${
-                tab === t.value
-                  ? "bg-[#D9A320] text-[#0D0F14] shadow-lg shadow-[#D9A320]/20"
-                  : "border border-[#D9A320]/25 text-[#F2E3C6]/65 hover:border-[#D9A320] hover:text-[#D9A320] backdrop-blur-sm"
-              }`}
-            >
-              {typeof t.icon === "string" ? t.icon : t.icon}
-              {lang === "es" ? t.es : t.en}
-            </button>
-          ))}
-        </motion.div>
-
-        {/* Products grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-24"
-        >
-          {filtered.map((item, idx) => (
-            <motion.div
-              layout
-              key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.08, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="flex h-full"
-            >
-              <StoreCard item={item} />
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Pre-sale banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative overflow-hidden rounded-3xl p-10 sm:p-16 text-center bg-gradient-to-br from-[#1D3515]/60 to-[#0D0F14] border border-[#D9A320]/20 shadow-2xl"
-        >
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-[#D9A320]/5 blur-3xl opacity-60" />
-          <span className="badge-limited text-xs px-5 py-2 rounded-full inline-block mb-6 shadow-md shadow-black/10">
-            {lang === "es" ? "Preventa exclusiva" : "Exclusive pre-sale"}
-          </span>
-          <h2
-            className="text-5xl sm:text-6xl font-display text-[#F2E3C6] mb-4 tracking-wide"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-          >
-            {lang === "es"
-              ? "Reserva el próximo lote"
-              : "Reserve the next batch"}
-          </h2>
-          <p className="text-[#F2E3C6]/75 mb-10 max-w-md mx-auto text-lg font-light leading-relaxed">
-            {lang === "es"
-              ? "Suscríbete para recibir acceso prioritario a los próximos lotes antes de que se agoten."
-              : "Subscribe to get priority access to upcoming batches before they sell out."}
-          </p>
-          <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lang === "es" ? "Quiero estar en la lista de preventa de Tucán Brewery" : "I want to be on the Tucán Brewery pre-sale list")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-[#D9A320] text-[#0D0F14] font-bold px-9 py-5 rounded-full hover:bg-[#E86A17] hover:shadow-2xl hover:shadow-[#D9A320]/25 transition-all text-xs uppercase tracking-wider"
+            className="inline-flex items-center justify-center gap-3 bg-[#25D366] px-7 py-4 text-sm font-bold text-white hover:bg-[#20c05b]"
           >
             <MessageCircle size={18} />
-            {lang === "es" ? "Quiero acceso prioritario" : "I want priority access"}
+            {lang === "es" ? "Chatear ahora" : "Chat now"}
           </a>
-        </motion.div>
-      </div>
+        </div>
+      </section>
+
+      <section className="route-pad py-10">
+        <div className="mx-auto grid max-w-[1500px] gap-8 lg:grid-cols-[280px_1fr]">
+          <aside className="h-fit border border-[#F2E3C6]/10 bg-[#11151A] p-5 lg:sticky lg:top-28">
+            <div className="mb-6 flex items-center gap-3 border-b border-[#F2E3C6]/10 pb-5">
+              <Search className="text-[#D9A320]" size={20} />
+              <div>
+                <p className="font-bold text-[#F7E9C9]">{lang === "es" ? "Filtrar productos" : "Filter products"}</p>
+                <p className="text-xs text-[#F2E3C6]/42">{filtered.length} {lang === "es" ? "resultados" : "results"}</p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              {tabs.map((item) => (
+                <button
+                  key={item.value}
+                  onClick={() => setTab(item.value)}
+                  className={`flex w-full items-center justify-between border px-4 py-3 text-left text-sm font-semibold ${
+                    tab === item.value
+                      ? "border-[#D9A320] bg-[#D9A320] text-[#080A0E]"
+                      : "border-[#F2E3C6]/10 bg-[#080A0E] text-[#F2E3C6]/68 hover:border-[#D9A320] hover:text-[#D9A320]"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    {typeof item.icon === "string" ? item.icon : item.icon}
+                    {lang === "es" ? item.es : item.en}
+                  </span>
+                  <span>{item.value === "all" ? STORE_ITEMS.length : STORE_ITEMS.filter((product) => product.type === item.value).length}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-7 space-y-3 border-t border-[#F2E3C6]/10 pt-6">
+              {[
+                lang === "es" ? "Pedidos por WhatsApp" : "WhatsApp ordering",
+                lang === "es" ? "Entrega coordinada" : "Coordinated delivery",
+                lang === "es" ? "Micro-lotes limitados" : "Limited micro-batches",
+              ].map((text) => (
+                <div key={text} className="flex items-center gap-3 text-sm text-[#F2E3C6]/62">
+                  <Check size={16} className="text-[#25D366]" />
+                  {text}
+                </div>
+              ))}
+              <div className="flex items-center gap-3 pt-2 text-sm text-[#F2E3C6]/62">
+                <Truck size={16} className="text-[#D9A320]" />
+                {lang === "es" ? "Coordinamos delivery" : "Delivery coordinated"}
+              </div>
+            </div>
+          </aside>
+
+          <main>
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+              <h2 className="store-section-title font-display text-[#F7E9C9]">
+                {tab === "all"
+                  ? lang === "es" ? "Todos los productos" : "All products"
+                  : tabs.find((item) => item.value === tab)?.[lang]}
+              </h2>
+              <div className="border border-[#F2E3C6]/10 bg-[#11151A] px-4 py-2 text-sm text-[#F2E3C6]/58">
+                {lang === "es" ? "Orden: recomendados" : "Sort: recommended"}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {filtered.map((item) => (
+                <StoreCard key={item.id} item={item} />
+              ))}
+            </div>
+          </main>
+        </div>
+      </section>
     </div>
   );
 }

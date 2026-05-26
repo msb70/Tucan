@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 
@@ -28,9 +29,12 @@ const navLinks = {
 
 export default function Navigation() {
   const { lang, setLang } = useLang();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const links = navLinks[lang];
+  const isHome = pathname === "/";
+  const solidHeader = scrolled || !isHome || menuOpen;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -41,9 +45,9 @@ export default function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0D0F14]/95 backdrop-blur-md shadow-2xl border-b border-[#D9A320]/20"
-          : "bg-transparent"
+        solidHeader
+          ? "bg-[#0A0D10]/94 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.48)] border-b border-[#D9A320]/25"
+          : "bg-gradient-to-b from-[#080A0E]/72 to-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,10 +82,16 @@ export default function Navigation() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-3 py-2 text-sm font-medium text-[#F2E3C6]/80 hover:text-[#D9A320] relative group transition-colors"
+                className={`px-3 py-2 text-sm font-medium relative group transition-colors ${
+                  pathname === link.href
+                    ? "text-[#D9A320]"
+                    : "text-[#F2E3C6]/80 hover:text-[#D9A320]"
+                }`}
               >
                 {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D9A320] group-hover:w-full transition-all duration-300" />
+                <span className={`absolute bottom-0 left-0 h-0.5 bg-[#D9A320] transition-all duration-300 ${
+                  pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
+                }`} />
               </Link>
             ))}
           </div>

@@ -20,6 +20,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
 }
 
 body {
@@ -154,7 +155,50 @@ a, button {
 }
 
 .page-section {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 7rem;
+}
+
+.page-offset {
+  padding-top: 7rem;
+}
+
+.route-page {
+  padding-top: 9rem;
+}
+
+.route-pad {
+  padding-left: clamp(1.5rem, 4vw, 4rem);
+  padding-right: clamp(1.5rem, 4vw, 4rem);
+}
+
+.route-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.store-section-title {
+  font-size: clamp(2.4rem, 10vw, 3.8rem);
+  line-height: 0.95;
+}
+
+@media (max-width: 640px) {
+  html {
+    scroll-padding-top: 6.5rem;
+  }
+
+  .route-page {
+    padding-top: 7rem;
+  }
+
+  .route-pad {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .store-section-title {
+    font-size: clamp(2.2rem, 11vw, 3rem);
+  }
 }
 
 input, textarea {

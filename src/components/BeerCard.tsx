@@ -1,27 +1,19 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { Beer, getAvailabilityLabel, getAvailabilityColor } from "@/lib/data";
 import { useLang } from "@/context/LanguageContext";
 import BottleCounter from "./BottleCounter";
+import { BeerCanVisual } from "./ProductVisual";
 
 interface BeerCardProps {
   beer: Beer;
   featured?: boolean;
 }
 
-const cardImages: Record<string, string> = {
-  "chuzo-honey": "/beer_glass.png",
-  "besito-electrico": "/craft_beer.png",
-  "mora-colada": "/beer_bottles.png",
-  "banana-bread-ale": "/brew_process.png",
-};
-
 export default function BeerCard({ beer, featured = false }: BeerCardProps) {
   const { lang, t } = useLang();
   const availLabel = getAvailabilityLabel(beer.availability, lang);
   const availColor = getAvailabilityColor(beer.availability);
-  const image = cardImages[beer.id] ?? "/beer_glass.png";
 
   return (
     <Link href={`/cervezas/${beer.id}`} className="block h-full">
@@ -30,17 +22,8 @@ export default function BeerCard({ beer, featured = false }: BeerCardProps) {
           featured ? "h-full" : ""
         }`}
       >
-        <div className="relative h-64 overflow-hidden bg-[#11151A]">
-          <Image
-            src={image}
-            alt={beer.fullName}
-            fill
-            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          />
-          <div className={`absolute inset-0 bg-gradient-to-br ${beer.gradient} opacity-28 mix-blend-overlay`} />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F14] via-[#0D0F14]/14 to-transparent" />
-
+        <div className="relative h-72 overflow-hidden bg-[#11151A]">
+          <BeerCanVisual beer={beer} />
           <div className="absolute top-3 left-3">
             <span className="badge-batch rounded px-2.5 py-1 text-xs font-bold">
               Batch #{beer.batchCode}
@@ -57,7 +40,7 @@ export default function BeerCard({ beer, featured = false }: BeerCardProps) {
             </div>
           )}
 
-          <div className="absolute bottom-4 left-4 right-4">
+          <div className="absolute bottom-4 left-4 right-4 rounded bg-[#080A0E]/76 px-3 py-2 backdrop-blur-md">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D9A320]">
               {beer.style}
             </p>

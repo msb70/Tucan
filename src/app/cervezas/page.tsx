@@ -22,13 +22,13 @@ export default function CervezasPage() {
   const filtered = filter === "all" ? BEERS : BEERS.filter((b) => b.availability === filter);
 
   return (
-    <div className="pt-24 pb-28 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="route-page route-pad bg-[#080A0E] pb-28">
+      <div className="mx-auto max-w-[1500px]">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="mb-14 border-b border-[#F2E3C6]/10 bg-[#11151A] px-5 py-12 text-center sm:px-8">
           <p className="text-[#D9A320] text-xs uppercase tracking-widest mb-4">Tucán Brewery</p>
           <h1
-            className="text-6xl sm:text-8xl font-display text-[#F2E3C6]"
+            className="text-6xl sm:text-7xl font-display text-[#F2E3C6]"
             style={{ fontFamily: "'Bebas Neue', sans-serif" }}
           >
             {lang === "es" ? "Catálogo de cervezas" : "Beer Catalog"}
@@ -51,15 +51,15 @@ export default function CervezasPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-2 justify-center mb-10">
+        <div className="mb-10 flex flex-wrap justify-center gap-2">
           {filters.map((f) => (
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`border px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] transition-all ${
                 filter === f.value
-                  ? "bg-[#D9A320] text-[#0D0F14]"
-                  : "border border-[#D9A320]/20 text-[#F2E3C6]/60 hover:border-[#D9A320]/50 hover:text-[#D9A320]"
+                  ? "border-[#D9A320] bg-[#D9A320] text-[#0D0F14]"
+                  : "border-[#D9A320]/20 text-[#F2E3C6]/60 hover:border-[#D9A320]/50 hover:text-[#D9A320]"
               }`}
             >
               {lang === "es" ? f.es : f.en}
@@ -68,7 +68,7 @@ export default function CervezasPage() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((beer) => (
             <BeerCard key={beer.id} beer={beer} />
           ))}

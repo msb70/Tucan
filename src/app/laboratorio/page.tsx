@@ -1,24 +1,25 @@
 "use client";
+
 import { useState } from "react";
+import Image from "next/image";
+import { Atom, Beaker, BookOpen, FlaskConical, Microscope, Sparkles } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { LAB_ENTRIES, type LabEntry } from "@/lib/data";
-import { FlaskConical, BookOpen, Beaker, Atom } from "lucide-react";
-import { motion } from "framer-motion";
 
 type LabTab = "fermenting" | "testing" | "experiment" | "journal" | "all";
 
 const statusIcons: Record<LabEntry["status"], React.ReactNode> = {
-  fermenting: <FlaskConical size={16} />,
-  testing: <Beaker size={16} />,
-  experiment: <Atom size={16} />,
-  journal: <BookOpen size={16} />,
+  fermenting: <FlaskConical size={15} />,
+  testing: <Beaker size={15} />,
+  experiment: <Atom size={15} />,
+  journal: <BookOpen size={15} />,
 };
 
 const statusColors: Record<LabEntry["status"], string> = {
-  fermenting: "text-green-400 border-green-400/30 bg-green-400/10",
-  testing: "text-yellow-400 border-yellow-400/30 bg-yellow-400/10",
-  experiment: "text-blue-400 border-blue-400/30 bg-blue-400/10",
-  journal: "text-[#D9A320] border-[#D9A320]/30 bg-[#D9A320]/10",
+  fermenting: "text-green-300 border-green-300/35 bg-green-300/10",
+  testing: "text-yellow-300 border-yellow-300/35 bg-yellow-300/10",
+  experiment: "text-sky-300 border-sky-300/35 bg-sky-300/10",
+  journal: "text-[#D9A320] border-[#D9A320]/35 bg-[#D9A320]/10",
 };
 
 const statusLabels: Record<LabEntry["status"], { es: string; en: string }> = {
@@ -28,200 +29,181 @@ const statusLabels: Record<LabEntry["status"], { es: string; en: string }> = {
   journal: { es: "Bitácora", en: "Journal" },
 };
 
+const projectShapes = [
+  "polygon(0 0, 100% 0, 100% 88%, 88% 100%, 0 100%)",
+  "polygon(0 0, 88% 0, 100% 12%, 100% 100%, 0 100%)",
+  "polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 10%)",
+  "polygon(0 0, 100% 0, 100% 100%, 12% 100%, 0 88%)",
+];
+
+function ProjectIllustration({ entry, index }: { entry: LabEntry; index: number }) {
+  const hues = ["#d9a320", "#3f6b2a", "#e86a17", "#a92118", "#4aa6c9"];
+  const primary = hues[index % hues.length];
+  const secondary = hues[(index + 2) % hues.length];
+
+  return (
+    <div className="relative h-48 overflow-hidden bg-[#0D1115]">
+      <div className="absolute inset-0 opacity-70" style={{ background: `radial-gradient(circle at 30% 20%, ${primary}55, transparent 35%), linear-gradient(135deg, ${primary}22, ${secondary}33)` }} />
+      <div className="absolute left-8 top-8 h-28 w-20 rounded-b-3xl rounded-t-lg border-2 border-[#F2E3C6]/28 bg-[#F2E3C6]/8 backdrop-blur-md">
+        <div className="absolute bottom-0 left-0 right-0 rounded-b-3xl" style={{ height: `${44 + index * 8}%`, background: `linear-gradient(180deg, ${primary}, ${secondary})` }} />
+        <div className="absolute -top-7 left-1/2 h-8 w-8 -translate-x-1/2 rounded-t-lg border-2 border-b-0 border-[#F2E3C6]/28" />
+      </div>
+      <div className="absolute bottom-8 right-8 h-24 w-24 rounded-full border border-[#F2E3C6]/18 bg-[#080A0E]/62 shadow-2xl backdrop-blur-xl">
+        <div className="absolute inset-5 rounded-full" style={{ background: `linear-gradient(135deg, ${secondary}, ${primary})` }} />
+        <span className="absolute inset-0 flex items-center justify-center text-3xl">{entry.emoji}</span>
+      </div>
+      <div className="absolute left-36 top-10 h-1 w-28 rotate-12 bg-[#F2E3C6]/20" />
+      <div className="absolute left-36 top-20 h-1 w-20 -rotate-6 bg-[#F2E3C6]/20" />
+      <div className="absolute bottom-4 left-4 right-4 flex justify-between text-[0.58rem] font-bold uppercase tracking-[0.18em] text-[#F2E3C6]/36">
+        <span>Batch R&D</span>
+        <span>{entry.date}</span>
+      </div>
+    </div>
+  );
+}
+
 export default function LaboratorioPage() {
   const { lang, t } = useLang();
   const [activeTab, setActiveTab] = useState<LabTab>("all");
 
   const tabs: { value: LabTab; es: string; en: string }[] = [
     { value: "all", es: "Todo", en: "All" },
-    { value: "fermenting", es: "En fermentación", en: "Fermenting" },
-    { value: "testing", es: "En pruebas", en: "Testing" },
+    { value: "fermenting", es: "Fermentación", en: "Fermenting" },
+    { value: "testing", es: "Pruebas", en: "Testing" },
     { value: "experiment", es: "Experimentos", en: "Experiments" },
     { value: "journal", es: "Bitácora", en: "Journal" },
   ];
 
   const filtered = activeTab === "all"
     ? LAB_ENTRIES
-    : LAB_ENTRIES.filter((e) => e.status === activeTab);
+    : LAB_ENTRIES.filter((entry) => entry.status === activeTab);
 
   return (
-    <div className="pt-32 pb-44 px-4 md:px-8 max-w-[1400px] mx-auto">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-24"
-        >
-          <p className="text-[#D9A320] text-xs uppercase tracking-[0.3em] font-semibold mb-4">Tucán Brewery</p>
-          <h1
-            className="text-6xl sm:text-8xl font-display text-[#F2E3C6] tracking-wide"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-          >
-            {lang === "es" ? "El Laboratorio" : "The Laboratory"}
-          </h1>
-          <div className="divider-gold max-w-sm mx-auto mt-6 mb-6" />
-          <p className="text-[#F2E3C6]/60 mt-4 max-w-xl mx-auto text-lg font-light">
-            {lang === "es"
-              ? "Experimentos en proceso, ingredientes locos, recetas fallidas y entradas del diario del brewer."
-              : "Experiments in progress, wild ingredients, failed recipes and brewer's diary entries."}
-          </p>
-        </motion.div>
+    <div className="route-page bg-[#080A0E]">
+      <section className="route-pad relative overflow-hidden pb-20 pt-12">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#11151A_0%,#080A0E_84%)]" />
+        <div className="relative mx-auto grid max-w-[1500px] gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div className="lg:pl-8">
+            <span className="section-label">Tucán R&D</span>
+            <h1 className="font-display text-6xl leading-none text-[#F7E9C9] sm:text-7xl lg:text-8xl">
+              {lang === "es" ? "El Laboratorio" : "The Laboratory"}
+            </h1>
+            <p className="mt-7 max-w-2xl text-xl leading-9 text-[#F2E3C6]/70">
+              {lang === "es"
+                ? "Un laboratorio cervecero pequeño, ordenado y obsesivo: recetas en prueba, ingredientes tropicales y notas reales de fermentación."
+                : "A small, organized and obsessive beer lab: test recipes, tropical ingredients and real fermentation notes."}
+            </p>
+          </div>
 
-        {/* Hero image */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="relative h-96 rounded-3xl overflow-hidden mb-24 border border-white/5 shadow-2xl group"
-        >
-          <img
-            src="/beer_bottles.png"
-            alt="Laboratory"
-            className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-[3s]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0D0F14]/95 via-[#0D0F14]/75 to-transparent" />
-          <div className="absolute inset-0 flex items-center px-8 sm:px-16">
-            <div className="max-w-xl">
-              <span className="inline-flex items-center gap-2 bg-[#A92118]/20 border border-[#A92118]/40 px-4.5 py-1.5 rounded-full mb-4">
-                <span className="w-2 h-2 rounded-full bg-[#e74c3c] animate-pulse" />
-                <span className="text-xs font-semibold text-[#D9A320] tracking-widest uppercase">
-                  {lang === "es" ? "Experimento activo" : "Active experiment"}
+          <div className="relative min-h-[560px] overflow-hidden border border-[#F2E3C6]/10 shadow-[0_30px_100px_rgba(0,0,0,0.52)]">
+            <Image
+              src="/brew_process.png"
+              alt="Laboratorio pequeño de cerveza ordenado"
+              fill
+              priority
+              sizes="(min-width: 1024px) 52vw, 100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,10,14,0.78),rgba(8,10,14,0.2)),linear-gradient(180deg,rgba(8,10,14,0.05),rgba(8,10,14,0.86))]" />
+            <div className="absolute bottom-8 left-8 max-w-lg border-l-2 border-[#D9A320] bg-[#080A0E]/72 p-6 backdrop-blur-xl">
+              <div className="mb-4 flex items-center gap-3 text-[#D9A320]">
+                <Microscope size={24} />
+                <span className="text-xs font-bold uppercase tracking-[0.24em]">
+                  {lang === "es" ? "Micro-lab cervecero" : "Beer micro-lab"}
                 </span>
-              </span>
-              <p
-                className="text-4xl sm:text-5xl font-display text-[#F2E3C6] leading-none mb-3"
-                style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-              >
-                {lang === "es" ? "Proyecto Piña Ghost 🍍🌶️" : "Piña Ghost Project 🍍🌶️"}
-              </p>
-              <p className="text-[#F2E3C6]/70 text-lg font-light leading-relaxed">
+              </div>
+              <p className="text-base leading-8 text-[#F2E3C6]/76">
                 {lang === "es"
-                  ? "Piña + Ghost pepper. En fermentación activa desde Noviembre. El picante más tropical de Panamá."
-                  : "Pineapple + Ghost pepper. Actively fermenting since November. The most tropical spice in Panama."}
+                  ? "Cada proyecto se documenta desde la idea hasta la prueba final: temperatura, ingredientes, aroma, riesgo y resultado."
+                  : "Every project is documented from idea to final test: temperature, ingredients, aroma, risk and result."}
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
+      </section>
 
-        {/* Tabs */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="flex flex-wrap gap-2.5 mb-12 justify-center"
-        >
-          {tabs.map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => setActiveTab(tab.value)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold tracking-wide uppercase transition-all ${
-                activeTab === tab.value
-                  ? "bg-[#D9A320] text-[#0D0F14] shadow-lg shadow-[#D9A320]/20"
-                  : "border border-[#D9A320]/25 text-[#F2E3C6]/65 hover:border-[#D9A320] hover:text-[#D9A320] backdrop-blur-sm"
-              }`}
-            >
-              {tab.value !== "all" && statusIcons[tab.value as LabEntry["status"]]}
-              {lang === "es" ? tab.es : tab.en}
-            </button>
-          ))}
-        </motion.div>
+      <section className="route-pad py-14">
+        <div className="mx-auto max-w-[1500px]">
+          <div className="mb-10 flex flex-wrap items-center justify-between gap-6">
+            <div>
+              <span className="section-label">{lang === "es" ? "Proyectos" : "Projects"}</span>
+              <h2 className="font-display text-5xl leading-none text-[#F7E9C9] sm:text-6xl">
+                {lang === "es" ? "Pipeline experimental" : "Experimental pipeline"}
+              </h2>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.value}
+                  onClick={() => setActiveTab(tab.value)}
+                  className={`flex items-center gap-2 border px-4 py-3 text-xs font-bold uppercase tracking-[0.16em] ${
+                    activeTab === tab.value
+                      ? "border-[#D9A320] bg-[#D9A320] text-[#080A0E]"
+                      : "border-[#F2E3C6]/14 bg-[#11151A] text-[#F2E3C6]/62 hover:border-[#D9A320] hover:text-[#D9A320]"
+                  }`}
+                >
+                  {tab.value !== "all" && statusIcons[tab.value as LabEntry["status"]]}
+                  {lang === "es" ? tab.es : tab.en}
+                </button>
+              ))}
+            </div>
+          </div>
 
-        {/* Entries grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-        >
-          {filtered.map((entry, idx) => (
-            <motion.div
-              layout
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              key={entry.id}
-              className="glass-card rounded-2xl p-8 card-glow border-white/5 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className="text-5xl animate-float" style={{ animationDuration: '4s' }}>{entry.emoji}</div>
+          <div className="grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((entry, index) => (
+              <article
+                key={entry.id}
+                className="group overflow-hidden border border-[#F2E3C6]/10 bg-[#11151A] shadow-[0_18px_70px_rgba(0,0,0,0.34)]"
+                style={{ clipPath: projectShapes[index % projectShapes.length] }}
+              >
+                <ProjectIllustration entry={entry} index={index} />
+                <div className="p-7">
+                  <div className="mb-5 flex items-start justify-between gap-4">
                     <div>
-                      <h3
-                        className="font-display text-2xl text-[#F2E3C6] tracking-wide"
-                        style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-                      >
+                      <h3 className="font-display text-3xl leading-none text-[#F7E9C9] group-hover:text-[#D9A320]">
                         {t(entry.title)}
                       </h3>
-                      <p className="text-xs text-[#F2E3C6]/30 uppercase tracking-widest mt-0.5">{entry.date}</p>
+                      <p className="mt-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#F2E3C6]/38">
+                        {entry.date}
+                      </p>
                     </div>
+                    <span className={`flex shrink-0 items-center gap-1.5 border px-3 py-1.5 text-[0.62rem] font-bold uppercase tracking-[0.12em] ${statusColors[entry.status]}`}>
+                      {statusIcons[entry.status]}
+                      {statusLabels[entry.status][lang]}
+                    </span>
                   </div>
-                  <span
-                    className={`flex items-center gap-1.5 text-xs px-3.5 py-1.5 rounded-full border font-bold uppercase tracking-wider ${statusColors[entry.status]}`}
-                  >
-                    {statusIcons[entry.status]}
-                    {statusLabels[entry.status][lang]}
-                  </span>
-                </div>
-
-                <p className="text-[#F2E3C6]/75 text-base leading-relaxed mb-6 font-light">
-                  {t(entry.description)}
-                </p>
-              </div>
-
-              {entry.ingredients && (
-                <div className="pt-4 border-t border-[#D9A320]/10">
-                  <p className="text-xs uppercase tracking-[0.2em] text-[#F2E3C6]/35 mb-3 font-semibold">
-                    {lang === "es" ? "Ingredientes clave" : "Key ingredients"}
+                  <p className="min-h-24 text-base leading-8 text-[#F2E3C6]/68">
+                    {t(entry.description)}
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {entry.ingredients.map((ing) => (
-                      <span
-                        key={ing}
-                        className="text-xs px-3.5 py-1 rounded-full bg-[#1D3515]/50 text-[#D9A320] border border-[#3F6B2A]/30 font-medium"
-                      >
-                        {ing}
-                      </span>
-                    ))}
-                  </div>
+                  {entry.ingredients && (
+                    <div className="mt-7 border-t border-[#F2E3C6]/10 pt-5">
+                      <p className="mb-3 text-[0.66rem] font-bold uppercase tracking-[0.22em] text-[#D9A320]">
+                        {lang === "es" ? "Ingredientes clave" : "Key ingredients"}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {entry.ingredients.map((ingredient) => (
+                          <span key={ingredient} className="border border-[#3F6B2A]/40 bg-[#1D3515]/45 px-3 py-1 text-xs font-medium text-[#F2E3C6]/72">
+                            {ingredient}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {filtered.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-5xl mb-4">🧪</p>
-            <p className="text-[#F2E3C6]/40 text-lg">
-              {lang === "es" ? "No hay experimentos en esta categoría." : "No experiments in this category."}
-            </p>
+              </article>
+            ))}
           </div>
-        )}
 
-        {/* Coming soon */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mt-24 p-10 sm:p-14 rounded-3xl bg-[#171A20] border border-dashed border-[#D9A320]/25 text-center relative overflow-hidden"
-        >
-          <p className="text-5xl mb-4 animate-float">📸</p>
-          <h3
-            className="text-4xl font-display text-[#D9A320] mb-4 tracking-wide"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-          >
-            {lang === "es" ? "Fotos del laboratorio próximamente" : "Lab photos coming soon"}
-          </h3>
-          <p className="text-[#F2E3C6]/60 text-base max-w-lg mx-auto font-light leading-relaxed">
-            {lang === "es"
-              ? "Estamos documentando activamente el proceso. Pronto verás las fotos reales de nuestro laboratorio artesanal y de fermentación en Panamá."
-              : "We're actively documenting the process. Soon you'll see real photos of our craft and fermentation laboratory in Panama."}
-          </p>
-        </motion.div>
-      </div>
+          {filtered.length === 0 && (
+            <div className="py-24 text-center">
+              <Sparkles className="mx-auto mb-4 text-[#D9A320]" size={36} />
+              <p className="text-lg text-[#F2E3C6]/48">
+                {lang === "es" ? "No hay experimentos en esta categoría." : "No experiments in this category."}
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
