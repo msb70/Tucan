@@ -68,7 +68,7 @@ export default function HistoriaPage() {
   };
 
   return (
-    <div className="pt-20">
+    <div className="pt-16 md:pt-20">
       {/* Hero */}
       <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden py-20">
         <div

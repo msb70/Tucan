@@ -620,7 +620,7 @@ export const LAB_ENTRIES: LabEntry[] = [
   },
 ];
 
-export const WHATSAPP_NUMBER = "50769999999";
+export const WHATSAPP_NUMBER = "50763705338";
 
 export function getAvailabilityLabel(availability: Availability, lang: "es" | "en") {
   const labels: Record<Availability, { es: string; en: string }> = {

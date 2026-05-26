@@ -44,7 +44,7 @@ export default function LaboratorioPage() {
     : LAB_ENTRIES.filter((e) => e.status === activeTab);
 
   return (
-    <div className="pt-24 pb-20 px-4">
+    <div className="pt-24 pb-28 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">

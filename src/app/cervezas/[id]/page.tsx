@@ -34,7 +34,7 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
   const otherBeers = BEERS.filter((b) => b.id !== beer.id).slice(0, 3);
 
   return (
-    <div className="pt-24 pb-20 px-4">
+    <div className="pt-24 pb-28 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Back */}
         <Link

@@ -49,7 +49,7 @@ export default function Footer() {
                 <InstagramIcon size={18} />
               </a>
               <a
-                href="https://wa.me/50769999999"
+                href="https://wa.me/50763705338"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full border border-[#D9A320]/30 flex items-center justify-center text-[#D9A320] hover:bg-[#D9A320] hover:text-[#0D0F14] transition-all"

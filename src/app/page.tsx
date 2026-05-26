@@ -97,7 +97,8 @@ export default function HomePage() {
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-[#0D0F14]/95 via-[#0D0F14]/80 to-[#1D3515]/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F14] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F14] via-[#0D0F14]/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#171A20] to-transparent" />
 
         {/* Floating tropical elements */}
         <div className="absolute top-20 right-10 text-5xl opacity-20 leaf-sway">🌴</div>
@@ -171,18 +172,19 @@ export default function HomePage() {
       </section>
 
       {/* ─── STATS ────────────────────────────────────────────────────── */}
-      <section className="bg-[#171A20] border-y border-[#D9A320]/15 py-10">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
+      <section className="bg-[#171A20] border-y border-[#D9A320]/20 py-16">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {stats.map((s) => (
-            <div key={s.label.es} className="text-center">
+            <div key={s.label.es} className="text-center group">
               <p
-                className="text-4xl sm:text-5xl font-display text-gold-gradient mb-1"
+                className="text-5xl sm:text-6xl font-display text-gold-gradient mb-2"
                 style={{ fontFamily: "'Bebas Neue', sans-serif" }}
               >
                 <AnimatedCounter to={s.value} />
                 {s.suffix}
               </p>
-              <p className="text-xs text-[#F2E3C6]/40 uppercase tracking-wider">
+              <div className="w-8 h-px bg-[#D9A320]/30 mx-auto mb-2" />
+              <p className="text-xs text-[#F2E3C6]/50 uppercase tracking-widest font-medium">
                 {t(s.label)}
               </p>
             </div>
@@ -191,7 +193,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── MANIFIESTO ───────────────────────────────────────────────── */}
-      <section className="py-24 px-4 relative overflow-hidden">
+      <section className="py-28 md:py-36 px-4 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-5"
           style={{
@@ -230,19 +232,20 @@ export default function HomePage() {
       </section>
 
       {/* ─── CERVEZAS DESTACADAS ──────────────────────────────────────── */}
-      <section className="py-20 px-4">
+      <section className="py-24 md:py-32 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="text-[#D9A320] text-xs uppercase tracking-widest font-semibold">
+          <div className="text-center mb-16">
+            <span className="inline-block text-[#D9A320] text-xs uppercase tracking-[0.25em] font-semibold mb-4">
               {lang === "es" ? "Lotes actuales" : "Current batches"}
             </span>
             <h2
-              className="text-5xl sm:text-6xl font-display text-[#F2E3C6] mt-2"
+              className="text-5xl sm:text-7xl font-display text-[#F2E3C6]"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
               {lang === "es" ? "Cervezas destacadas" : "Featured Beers"}
             </h2>
-            <p className="text-[#F2E3C6]/50 mt-3 max-w-md mx-auto">
+            <div className="divider-gold max-w-xs mx-auto mt-6 mb-6" />
+            <p className="text-[#F2E3C6]/50 max-w-md mx-auto">
               {lang === "es"
                 ? "Micro-lotes artesanales. Limitados. Algunos desaparecerán para siempre."
                 : "Craft micro-batches. Limited. Some will disappear forever."}
@@ -268,16 +271,20 @@ export default function HomePage() {
       </section>
 
       {/* ─── BATCH TIMELINE ───────────────────────────────────────────── */}
-      <section className="py-16 bg-[#171A20] px-4">
+      <section className="py-20 md:py-28 bg-[#171A20] border-y border-[#D9A320]/15 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
+          <div className="text-center mb-12">
+            <span className="inline-block text-[#D9A320] text-xs uppercase tracking-[0.25em] font-semibold mb-4">
+              {lang === "es" ? "Historial completo" : "Complete history"}
+            </span>
             <h2
-              className="text-4xl sm:text-5xl font-display text-[#D9A320]"
+              className="text-4xl sm:text-6xl font-display text-[#F2E3C6]"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
               {lang === "es" ? "Línea de tiempo de lotes" : "Batch Timeline"}
             </h2>
-            <p className="text-[#F2E3C6]/40 mt-2 text-sm">
+            <div className="divider-gold max-w-xs mx-auto mt-5 mb-5" />
+            <p className="text-[#F2E3C6]/40 text-sm">
               {lang === "es" ? "La historia embotellada de Tucán Brewery." : "The bottled history of Tucán Brewery."}
             </p>
           </div>
@@ -313,7 +320,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── HISTORIA PREVIEW ─────────────────────────────────────────── */}
-      <section className="py-20 px-4">
+      <section className="py-24 md:py-32 px-4">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <span className="text-[#D9A320] text-xs uppercase tracking-widest font-semibold">
@@ -364,15 +371,19 @@ export default function HomePage() {
       </section>
 
       {/* ─── VALORES ──────────────────────────────────────────────────── */}
-      <section className="py-16 bg-[#171A20] px-4">
+      <section className="py-20 md:py-28 bg-[#171A20] border-y border-[#D9A320]/15 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-14">
+            <span className="inline-block text-[#D9A320] text-xs uppercase tracking-[0.25em] font-semibold mb-4">
+              {lang === "es" ? "Nuestra esencia" : "Our essence"}
+            </span>
             <h2
-              className="text-4xl sm:text-5xl font-display text-[#F2E3C6]"
+              className="text-4xl sm:text-6xl font-display text-[#F2E3C6]"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
               {lang === "es" ? "Lo que nos mueve" : "What drives us"}
             </h2>
+            <div className="divider-gold max-w-xs mx-auto mt-5" />
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -398,7 +409,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── NEWSLETTER ───────────────────────────────────────────────── */}
-      <section className="py-20 px-4 relative overflow-hidden">
+      <section className="py-24 md:py-32 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#1D3515] via-[#3F6B2A]/20 to-[#1D3515]" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-[#D9A320]/5 blur-3xl" />
 

@@ -138,3 +138,26 @@ body::before {
 }
 
 a, button { transition: all 0.2s ease; }
+
+.section-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #D9A320;
+  margin-bottom: 1rem;
+}
+
+.page-section {
+  scroll-margin-top: 5rem;
+}
+
+input, textarea {
+  -webkit-appearance: none;
+}
+
+/* Smooth section transitions */
+section + section {
+  position: relative;
+}
