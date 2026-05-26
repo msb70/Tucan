@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { Share2, Mail, MessageCircle } from "lucide-react";
+import { Mail, MessageCircle } from "lucide-react";
 
 function InstagramIcon({ size = 18 }: { size?: number }) {
   return (
@@ -25,7 +25,7 @@ export default function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <div className="relative w-12 h-12">
-                <Image src="/logo.jpg" alt="Tucán Brewery" fill className="object-contain rounded-full" />
+                <Image src="/logo.jpg" alt="Tucán Brewery" fill sizes="48px" className="object-contain rounded-full" />
               </div>
               <div>
                 <p className="font-display text-2xl text-shimmer" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>

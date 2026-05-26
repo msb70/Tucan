@@ -105,48 +105,52 @@ body::before {
 
 .divider-gold {
   height: 2px;
-  background: linear-gradient(90deg, transparent, #D9A320, transparent);
+  background: linear-gradient(90deg, transparent, rgba(217, 163, 32, 0.4), transparent);
 }
 
 .glass-card {
-  background: rgba(23, 26, 32, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(217, 163, 32, 0.15);
+  background: rgba(13, 15, 20, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(242, 227, 198, 0.06);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
 }
 
 .card-glow {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .card-glow:hover {
-  box-shadow: 0 0 30px rgba(217,163,32,0.25), 0 20px 60px rgba(0,0,0,0.5);
-  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(217, 163, 32, 0.15);
+  transform: translateY(-6px);
+  border-color: rgba(217, 163, 32, 0.3);
 }
 
 .badge-limited {
-  background: linear-gradient(135deg, #A92118, #c42b20);
+  background: linear-gradient(135deg, #A92118, #e74c3c);
   color: #F2E3C6;
   font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
 }
 
 .badge-batch {
   background: linear-gradient(135deg, #D9A320, #F5C542);
   color: #0D0F14;
   font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
 }
 
-a, button { transition: all 0.2s ease; }
+a, button {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
 .section-label {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: #D9A320;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .page-section {
@@ -155,9 +159,25 @@ a, button { transition: all 0.2s ease; }
 
 input, textarea {
   -webkit-appearance: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Smooth section transitions */
 section + section {
   position: relative;
+}
+
+/* Premium full-page styling utils */
+.premium-container {
+  max-w: 1400px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media (max-width: 640px) {
+  .premium-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

@@ -1,10 +1,20 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Leaf, FlaskConical, Star, ChevronDown } from "lucide-react";
-import { useLang } from "@/context/LanguageContext";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Beaker,
+  Beer,
+  BottleWine,
+  ChevronDown,
+  Flame,
+  Leaf,
+  Sparkles,
+} from "lucide-react";
 import BeerCard from "@/components/BeerCard";
+import { useLang } from "@/context/LanguageContext";
 import { BEERS } from "@/lib/data";
 
 const featuredBeers = BEERS.filter((b) =>
@@ -16,18 +26,27 @@ function AnimatedCounter({ to, duration = 1500 }: { to: number; duration?: numbe
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
       observer.disconnect();
+
       let start = 0;
       const step = to / (duration / 16);
-      const interval = setInterval(() => {
+      const interval = window.setInterval(() => {
         start += step;
-        if (start >= to) { setCount(to); clearInterval(interval); }
-        else setCount(Math.floor(start));
+        if (start >= to) {
+          setCount(to);
+          window.clearInterval(interval);
+          return;
+        }
+        setCount(Math.floor(start));
       }, 16);
     });
-    if (ref.current) observer.observe(ref.current);
+
+    observer.observe(node);
     return () => observer.disconnect();
   }, [to, duration]);
 
@@ -39,41 +58,35 @@ export default function HomePage() {
 
   const heroText = {
     es: {
-      eyebrow: "Panamá · Micro-lotes limitados",
-      h1a: "Cervezas artesanales",
-      h1b: "tropicales.",
-      sub: "Micro-lotes limitados hechos en Panamá. Cada batch es único. Algunos nunca volverán.",
+      eyebrow: "Panama · Micro-lotes tropicales",
+      h1a: "Tucan",
+      h1b: "Brewery",
+      sub: "Cervezas artesanales de fruta, calor y obsesión. Batches pequeños, sabores vivos y drops que no se repiten.",
       cta1: "Ver cervezas",
       cta2: "Comprar ahora",
       scroll: "Descubrir",
     },
     en: {
-      eyebrow: "Panama · Limited micro-batches",
-      h1a: "Tropical craft",
-      h1b: "beers.",
-      sub: "Limited micro-batches made in Panama. Each batch is unique. Some will never return.",
+      eyebrow: "Panama · Tropical micro-batches",
+      h1a: "Tucan",
+      h1b: "Brewery",
+      sub: "Craft beers made of fruit, heat and obsession. Small batches, living flavors and drops that do not repeat.",
       cta1: "See beers",
       cta2: "Shop now",
       scroll: "Discover",
     },
   };
 
-  const copy = heroText[lang];
-
   const manifestoText = {
     es: [
-      "En Tucán Brewery no hacemos cerveza para llenar estantes.",
-      "Hacemos cerveza porque hay sabores que merecen existir aunque sea una sola vez.",
-      "Cada lote nace de una idea, una obsesión o una mezcla que probablemente nadie pidió… pero que nosotros necesitábamos probar.",
-      "Buscamos crear experiencias: tropicales, intensas, raras, memorables y vivas.",
-      "Trabajamos en micro-lotes porque creemos que lo artesanal de verdad debe sentirse humano, imperfecto y limitado.",
+      "No hacemos cerveza para llenar estantes.",
+      "Creamos sabores que merecen existir aunque sea una sola vez.",
+      "Cada lote nace de una idea rara, una fruta tropical o una mezcla que necesitábamos probar.",
     ],
     en: [
-      "At Tucán Brewery we don't make beer to fill shelves.",
-      "We make beer because there are flavors that deserve to exist even if just once.",
-      "Every batch is born from an idea, an obsession or a mix nobody asked for… but that we needed to try.",
-      "We seek to create experiences: tropical, intense, rare, memorable and alive.",
-      "We work in micro-batches because we believe true craftsmanship must feel human, imperfect and limited.",
+      "We do not brew beer to fill shelves.",
+      "We create flavors that deserve to exist, even if only once.",
+      "Every batch starts with a strange idea, a tropical fruit or a mix we needed to taste.",
     ],
   };
 
@@ -81,110 +94,106 @@ export default function HomePage() {
     { value: 8, label: { es: "Batches producidos", en: "Batches produced" }, suffix: "" },
     { value: 320, label: { es: "Botellas en total", en: "Total bottles" }, suffix: "+" },
     { value: 3, label: { es: "Cervezas activas", en: "Active beers" }, suffix: "" },
-    { value: 100, label: { es: "% Artesanal", en: "% Craft" }, suffix: "%" },
+    { value: 100, label: { es: "Artesanal", en: "Craft" }, suffix: "%" },
   ];
 
+  const values = [
+    {
+      icon: Flame,
+      title: { es: "Intensidad", en: "Intensity" },
+      desc: { es: "Sabores tropicales con carácter, acidez y final memorable.", en: "Tropical flavors with character, acidity and a memorable finish." },
+    },
+    {
+      icon: BottleWine,
+      title: { es: "Micro-lotes", en: "Micro-batches" },
+      desc: { es: "Pocas botellas, control manual y recetas que evolucionan.", en: "Few bottles, manual control and recipes that evolve." },
+    },
+    {
+      icon: Leaf,
+      title: { es: "Panamá", en: "Panama" },
+      desc: { es: "Fruta, humedad, selva y atardecer dentro de cada batch.", en: "Fruit, humidity, jungle and sunset inside every batch." },
+    },
+    {
+      icon: Beaker,
+      title: { es: "Laboratorio", en: "Lab" },
+      desc: { es: "Cerveza experimental sin perder balance ni oficio.", en: "Experimental beer without losing balance or craft." },
+    },
+  ];
+
+  const copy = heroText[lang];
+
   return (
-    <div>
-      {/* ─── HERO ─────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background layers */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1558642891-54be180ea339?w=1600&q=80')",
-          }}
+    <div className="overflow-hidden bg-[#080A0E]">
+      <section className="relative min-h-[100svh] overflow-hidden">
+        <Image
+          src="/beer_glass.png"
+          alt="Cerveza artesanal tropical en la selva"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[52%_45%] scale-[1.05]"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0D0F14]/95 via-[#0D0F14]/80 to-[#1D3515]/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F14] via-[#0D0F14]/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#171A20] to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_58%_42%,rgba(217,163,32,0.3),transparent_34%),linear-gradient(90deg,rgba(8,10,14,0.58)_0%,rgba(8,10,14,0.36)_46%,rgba(8,10,14,0.04)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#080A0E] via-[#080A0E]/72 to-transparent" />
 
-        {/* Floating tropical elements */}
-        <div className="absolute top-20 right-10 text-5xl opacity-20 leaf-sway">🌴</div>
-        <div className="absolute bottom-40 left-10 text-4xl opacity-15 leaf-sway" style={{ animationDelay: "1s" }}>🍃</div>
-        <div className="absolute top-40 left-20 text-3xl opacity-10 animate-float">🌺</div>
-
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 border border-[#D9A320]/40 bg-[#D9A320]/10 px-4 py-1.5 rounded-full mb-6">
-            <Leaf size={14} className="text-[#3F6B2A]" />
-            <span className="text-xs font-medium text-[#D9A320] tracking-widest uppercase">
+        <div className="relative z-10 flex min-h-[100svh] w-full items-center pb-24 pl-6 pr-5 pt-32 sm:pl-12 sm:pr-8 lg:pl-24 lg:pr-10">
+          <div className="max-w-3xl" style={{ marginLeft: "clamp(1.5rem, 6vw, 6.5rem)" }}>
+            <div className="mb-8 inline-flex items-center gap-3 border border-[#D9A320]/40 bg-[#080A0E]/46 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[#F5C542] backdrop-blur-xl">
+              <Sparkles size={15} />
               {copy.eyebrow}
-            </span>
-          </div>
+            </div>
 
-          {/* H1 */}
-          <h1 className="mb-6">
-            <span
-              className="block text-5xl sm:text-7xl lg:text-9xl font-display text-[#F2E3C6] leading-none"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-            >
-              {copy.h1a}
-            </span>
-            <span
-              className="block text-6xl sm:text-8xl lg:text-[10rem] font-display text-shimmer leading-none"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-            >
-              {copy.h1b}
-            </span>
-          </h1>
+            <h1 className="font-display text-[4.65rem] leading-[0.8] text-[#F7E9C9] drop-shadow-[0_18px_40px_rgba(0,0,0,0.65)] sm:text-[8rem] lg:text-[9rem] xl:text-[10rem]">
+              <span className="block">{copy.h1a}</span>
+              <span className="block text-shimmer">{copy.h1b}</span>
+            </h1>
 
-          {/* Subtitle */}
-          <p className="text-[#F2E3C6]/70 text-lg sm:text-xl max-w-xl mx-auto mb-10 leading-relaxed">
-            {copy.sub}
-          </p>
+            <p className="mt-8 max-w-2xl text-lg leading-8 text-[#F2E3C6]/78 sm:text-2xl sm:leading-10">
+              {copy.sub}
+            </p>
 
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Link
-              href="/cervezas"
-              className="group flex items-center justify-center gap-2 bg-[#D9A320] text-[#0D0F14] font-bold px-8 py-4 rounded-full hover:bg-[#E86A17] hover:shadow-xl hover:shadow-[#D9A320]/30 transition-all text-base"
-            >
-              {copy.cta1}
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/tienda"
-              className="flex items-center justify-center gap-2 border-2 border-[#D9A320]/50 text-[#F2E3C6] font-semibold px-8 py-4 rounded-full hover:border-[#D9A320] hover:bg-[#D9A320]/10 transition-all text-base"
-            >
-              {copy.cta2}
-            </Link>
-          </div>
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/cervezas"
+                className="group inline-flex items-center justify-center gap-3 bg-[#D9A320] px-8 py-4 text-sm font-bold uppercase tracking-[0.18em] text-[#080A0E] shadow-[0_24px_70px_rgba(217,163,32,0.25)] hover:bg-[#F5C542]"
+              >
+                {copy.cta1}
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/tienda"
+                className="inline-flex items-center justify-center gap-3 border border-[#F2E3C6]/28 bg-[#080A0E]/36 px-8 py-4 text-sm font-bold uppercase tracking-[0.18em] text-[#F2E3C6] backdrop-blur-xl hover:border-[#D9A320] hover:text-[#D9A320]"
+              >
+                {copy.cta2}
+              </Link>
+            </div>
 
-          {/* Batch badge */}
-          <div className="inline-flex items-center gap-2 bg-[#A92118]/20 border border-[#A92118]/40 px-4 py-2 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-[#A92118] animate-pulse" />
-            <span className="text-sm text-[#F2E3C6]/80">
-              {lang === "es"
-                ? "Lote Activo: Lichi Rosada 008 — Solo 32 botellas"
-                : "Active Batch: Lichi Rosada 008 — Only 32 bottles"}
-            </span>
+            <div className="mt-12 inline-flex max-w-full items-center gap-3 border-l-2 border-[#A92118] bg-[#080A0E]/58 px-5 py-4 text-sm text-[#F2E3C6]/82 backdrop-blur-xl">
+              <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#e74c3c] shadow-[0_0_22px_rgba(231,76,60,0.8)]" />
+              <span>
+                {lang === "es"
+                  ? "Lote activo: Lichi Rosada 008 · solo 32 botellas"
+                  : "Active batch: Lichi Rosada 008 · only 32 bottles"}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#F2E3C6]/30 animate-bounce">
-          <span className="text-xs tracking-widest uppercase">{copy.scroll}</span>
+        <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[#F2E3C6]/45">
+          <span className="text-[0.65rem] uppercase tracking-[0.32em]">{copy.scroll}</span>
           <ChevronDown size={20} />
         </div>
       </section>
 
-      {/* ─── STATS ────────────────────────────────────────────────────── */}
-      <section className="bg-[#171A20] border-y border-[#D9A320]/20 py-16">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+      <section className="relative -mt-16 z-20 px-5 sm:px-8 lg:px-10">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 border border-[#F2E3C6]/10 bg-[#11151A]/88 backdrop-blur-2xl md:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.label.es} className="text-center group">
-              <p
-                className="text-5xl sm:text-6xl font-display text-gold-gradient mb-2"
-                style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-              >
+            <div key={s.label.es} className="border-[#F2E3C6]/10 px-5 py-8 text-center even:border-l md:border-l md:first:border-l-0">
+              <p className="font-display text-5xl leading-none text-gold-gradient sm:text-7xl">
                 <AnimatedCounter to={s.value} />
                 {s.suffix}
               </p>
-              <div className="w-8 h-px bg-[#D9A320]/30 mx-auto mb-2" />
-              <p className="text-xs text-[#F2E3C6]/50 uppercase tracking-widest font-medium">
+              <p className="mt-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#F2E3C6]/48">
                 {t(s.label)}
               </p>
             </div>
@@ -192,261 +201,187 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── MANIFIESTO ───────────────────────────────────────────────── */}
-      <section className="py-28 md:py-36 px-4 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1559526642-c3f001ea68ee?w=1200&q=60')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0D0F14] via-transparent to-[#0D0F14]" />
-
-        <div className="relative max-w-3xl mx-auto text-center">
-          <div className="divider-gold mb-10" />
-
-          <FlaskConical size={32} className="mx-auto text-[#D9A320] mb-6 opacity-60" />
-
-          <div className="space-y-5">
-            {manifestoText[lang].map((line, i) => (
-              <p
-                key={i}
-                className={`text-lg sm:text-xl leading-relaxed ${
-                  i === 0
-                    ? "text-[#F2E3C6] font-semibold text-2xl sm:text-3xl"
-                    : i === 1
-                    ? "text-gold-gradient font-display text-2xl sm:text-3xl"
-                    : "text-[#F2E3C6]/70"
-                }`}
-                style={i <= 1 ? { fontFamily: "'Bebas Neue', sans-serif" } : {}}
-              >
-                {line}
+      <section className="relative px-5 py-28 sm:px-8 md:py-40 lg:px-10">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#080A0E_0%,#11151A_48%,#080A0E_100%)]" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="relative min-h-[520px] overflow-hidden border border-[#F2E3C6]/10">
+            <Image
+              src="/manifesto_bg.png"
+              alt="Proceso artesanal de cerveza tropical"
+              fill
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#080A0E]/88 via-transparent to-[#080A0E]/12" />
+            <div className="absolute bottom-0 left-0 right-0 p-7">
+              <p className="max-w-sm text-sm uppercase tracking-[0.26em] text-[#F5C542]">
+                {lang === "es" ? "Manifiesto líquido" : "Liquid manifesto"}
               </p>
-            ))}
+            </div>
           </div>
 
-          <div className="divider-gold mt-10" />
+          <div className="lg:pl-10">
+            <span className="section-label">{lang === "es" ? "Filosofía" : "Philosophy"}</span>
+            <div className="space-y-8">
+              {manifestoText[lang].map((line, i) => (
+                <p
+                  key={line}
+                  className={
+                    i === 0
+                      ? "font-display text-5xl leading-[0.95] text-[#F7E9C9] sm:text-7xl"
+                      : i === 1
+                        ? "font-display text-4xl leading-tight text-gold-gradient sm:text-6xl"
+                        : "max-w-2xl text-xl leading-9 text-[#F2E3C6]/68"
+                  }
+                >
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ─── CERVEZAS DESTACADAS ──────────────────────────────────────── */}
-      <section className="py-24 md:py-32 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="inline-block text-[#D9A320] text-xs uppercase tracking-[0.25em] font-semibold mb-4">
-              {lang === "es" ? "Lotes actuales" : "Current batches"}
-            </span>
-            <h2
-              className="text-5xl sm:text-7xl font-display text-[#F2E3C6]"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-            >
-              {lang === "es" ? "Cervezas destacadas" : "Featured Beers"}
-            </h2>
-            <div className="divider-gold max-w-xs mx-auto mt-6 mb-6" />
-            <p className="text-[#F2E3C6]/50 max-w-md mx-auto">
+      <section className="relative px-5 py-28 sm:px-8 md:py-40 lg:px-10">
+        <div className="absolute inset-0 opacity-45">
+          <Image
+            src="/beer_bottles.png"
+            alt="Botellas artesanales con frutas tropicales"
+            fill
+            sizes="100vw"
+            className="object-cover object-[50%_30%]"
+          />
+          <div className="absolute inset-0 bg-[#080A0E]/82" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl">
+          <div className="mb-16 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+            <div>
+              <span className="section-label">{lang === "es" ? "Drops actuales" : "Current drops"}</span>
+              <h2 className="font-display max-w-4xl text-6xl leading-none text-[#F7E9C9] sm:text-8xl">
+                {lang === "es" ? "Cervezas con presencia." : "Beers with presence."}
+              </h2>
+            </div>
+            <p className="max-w-md text-lg leading-8 text-[#F2E3C6]/64">
               {lang === "es"
-                ? "Micro-lotes artesanales. Limitados. Algunos desaparecerán para siempre."
-                : "Craft micro-batches. Limited. Some will disappear forever."}
+                ? "Una selección de micro-lotes con identidad propia: miel, maracuyá, mora, coco y recetas que se beben como una escena."
+                : "A selection of micro-batches with their own identity: honey, passion fruit, blackberry, coconut and recipes that drink like a scene."}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
             {featuredBeers.map((beer) => (
-              <BeerCard key={beer.id} beer={beer} />
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link
-              href="/cervezas"
-              className="inline-flex items-center gap-2 border border-[#D9A320]/40 text-[#D9A320] px-6 py-3 rounded-full hover:bg-[#D9A320] hover:text-[#0D0F14] transition-all font-semibold"
-            >
-              {lang === "es" ? "Ver catálogo completo" : "View full catalog"}
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── BATCH TIMELINE ───────────────────────────────────────────── */}
-      <section className="py-20 md:py-28 bg-[#171A20] border-y border-[#D9A320]/15 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="inline-block text-[#D9A320] text-xs uppercase tracking-[0.25em] font-semibold mb-4">
-              {lang === "es" ? "Historial completo" : "Complete history"}
-            </span>
-            <h2
-              className="text-4xl sm:text-6xl font-display text-[#F2E3C6]"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-            >
-              {lang === "es" ? "Línea de tiempo de lotes" : "Batch Timeline"}
-            </h2>
-            <div className="divider-gold max-w-xs mx-auto mt-5 mb-5" />
-            <p className="text-[#F2E3C6]/40 text-sm">
-              {lang === "es" ? "La historia embotellada de Tucán Brewery." : "The bottled history of Tucán Brewery."}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-3 justify-center">
-            {BEERS.concat().sort((a, b) => a.batch - b.batch).map((beer) => (
-              <Link key={beer.id} href={`/cervezas/${beer.id}`}>
-                <div
-                  className={`glass-card rounded-xl px-4 py-3 flex items-center gap-3 hover:border-[#D9A320]/40 transition-all group cursor-pointer ${
-                    beer.availability === "never-again" ? "opacity-60" : ""
-                  }`}
-                >
-                  <span className="badge-batch text-xs px-2 py-0.5 rounded-full">
-                    #{beer.batchCode}
-                  </span>
-                  <span className="text-lg">{beer.emoji}</span>
-                  <div>
-                    <p className="text-sm font-semibold text-[#F2E3C6] group-hover:text-[#D9A320] transition-colors">
-                      {beer.name}
-                    </p>
-                    <p className="text-xs text-[#F2E3C6]/30">{beer.productionDate}</p>
-                  </div>
-                  {beer.availability === "never-again" && (
-                    <span className="text-xs text-[#A92118] font-semibold">
-                      R.I.P
-                    </span>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── HISTORIA PREVIEW ─────────────────────────────────────────── */}
-      <section className="py-24 md:py-32 px-4">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <span className="text-[#D9A320] text-xs uppercase tracking-widest font-semibold">
-              {lang === "es" ? "Nuestra historia" : "Our story"}
-            </span>
-            <h2
-              className="text-5xl sm:text-6xl font-display text-[#F2E3C6] mt-2 mb-6 leading-tight"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-            >
-              {lang === "es" ? "Nació mucho antes de existir como marca." : "Born long before becoming a brand."}
-            </h2>
-            <p className="text-[#F2E3C6]/60 leading-relaxed mb-4">
-              {lang === "es"
-                ? "Todo empezó en Bélgica, con una tesis universitaria y una obsesión por los sabores que no existen todavía. Mafe y Lisandro convirtieron la curiosidad en cerveza artesanal panameña."
-                : "It all started in Belgium, with a university thesis and an obsession for flavors that don't exist yet. Mafe and Lisandro turned curiosity into Panamanian craft beer."}
-            </p>
-            <p className="text-[#F2E3C6]/60 leading-relaxed mb-8">
-              {lang === "es"
-                ? "El nombre viene de algo muy personal y muy tropical. Un chiste familiar que se convirtió en el símbolo perfecto de lo que queremos crear."
-                : "The name comes from something very personal and very tropical. A family joke that became the perfect symbol of what we want to create."}
-            </p>
-            <Link
-              href="/historia"
-              className="inline-flex items-center gap-2 text-[#D9A320] font-semibold hover:text-[#E86A17] transition-colors"
-            >
-              {lang === "es" ? "Leer historia completa" : "Read full story"}
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-2xl overflow-hidden aspect-[3/4]">
-              <img
-                src="https://images.unsplash.com/photo-1559526642-c3f001ea68ee?w=400&q=80"
-                alt="Brewing"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <div className="rounded-2xl overflow-hidden aspect-[3/4] mt-8">
-              <img
-                src="https://images.unsplash.com/photo-1510972527921-ce03766a1cf1?w=400&q=80"
-                alt="Craft beer"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── VALORES ──────────────────────────────────────────────────── */}
-      <section className="py-20 md:py-28 bg-[#171A20] border-y border-[#D9A320]/15 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14">
-            <span className="inline-block text-[#D9A320] text-xs uppercase tracking-[0.25em] font-semibold mb-4">
-              {lang === "es" ? "Nuestra esencia" : "Our essence"}
-            </span>
-            <h2
-              className="text-4xl sm:text-6xl font-display text-[#F2E3C6]"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-            >
-              {lang === "es" ? "Lo que nos mueve" : "What drives us"}
-            </h2>
-            <div className="divider-gold max-w-xs mx-auto mt-5" />
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: "🎨", title: { es: "Creatividad", en: "Creativity" }, desc: { es: "No repetir lo mismo de siempre.", en: "Never repeat what's been done." } },
-              { icon: "🤲", title: { es: "Artesanal", en: "Craft" }, desc: { es: "Hecho en pequeños lotes, manualmente.", en: "Made by hand, in small batches." } },
-              { icon: "🌴", title: { es: "Tropical", en: "Tropical" }, desc: { es: "Inspirado en Panamá, frutas y calor.", en: "Inspired by Panama, fruit and heat." } },
-              { icon: "🔬", title: { es: "Experimental", en: "Experimental" }, desc: { es: "Cada cerveza puede sorprender.", en: "Every beer can surprise." } },
-            ].map((v) => (
-              <div key={v.title.es} className="glass-card rounded-2xl p-6 text-center card-glow">
-                <div className="text-4xl mb-4">{v.icon}</div>
-                <h3
-                  className="font-display text-2xl text-[#D9A320] mb-2"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-                >
-                  {t(v.title)}
-                </h3>
-                <p className="text-[#F2E3C6]/50 text-sm">{t(v.desc)}</p>
+              <div key={beer.id}>
+                <BeerCard beer={beer} />
               </div>
             ))}
           </div>
+
+          <div className="mt-14 text-center">
+            <Link
+              href="/cervezas"
+              className="group inline-flex items-center gap-3 border border-[#D9A320]/44 bg-[#080A0E]/58 px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-[#D9A320] backdrop-blur-xl hover:bg-[#D9A320] hover:text-[#080A0E]"
+            >
+              {lang === "es" ? "Ver catálogo completo" : "View full catalog"}
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ─── NEWSLETTER ───────────────────────────────────────────────── */}
-      <section className="py-24 md:py-32 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1D3515] via-[#3F6B2A]/20 to-[#1D3515]" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-[#D9A320]/5 blur-3xl" />
+      <section className="relative px-5 py-28 sm:px-8 md:py-40 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+            <div>
+              <span className="section-label">{lang === "es" ? "Nuestra historia" : "Our story"}</span>
+              <h2 className="font-display text-6xl leading-none text-[#F7E9C9] sm:text-8xl">
+                {lang === "es" ? "Nació de una tesis. Creció como obsesión." : "Born from a thesis. Built as an obsession."}
+              </h2>
+              <p className="mt-8 text-lg leading-9 text-[#F2E3C6]/68">
+                {lang === "es"
+                  ? "Todo empezó en Bélgica, con una investigación universitaria y la idea de convertir frutas panameñas en cerveza. Mafe y Lisandro transformaron esa curiosidad en una marca de batches pequeños, tropicales y difíciles de olvidar."
+                  : "It started in Belgium, with university research and the idea of turning Panamanian fruit into beer. Mafe and Lisandro turned that curiosity into a brand of small, tropical and hard-to-forget batches."}
+              </p>
+              <Link
+                href="/historia"
+                className="mt-9 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-[#D9A320] hover:text-[#F5C542]"
+              >
+                {lang === "es" ? "Leer historia completa" : "Read full story"}
+                <ArrowRight size={16} />
+              </Link>
+            </div>
 
-        <div className="relative max-w-2xl mx-auto text-center">
-          <Star size={28} className="mx-auto text-[#D9A320] mb-4" />
-          <h2
-            className="text-5xl sm:text-6xl font-display text-[#F2E3C6] mb-4"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-          >
-            {lang === "es" ? "Entérate primero." : "Be first to know."}
-          </h2>
-          <p className="text-[#F2E3C6]/60 mb-8 text-lg">
-            {lang === "es"
-              ? "Nuevos drops, preventas, sabores secretos y eventos. Antes que nadie."
-              : "New drops, pre-sales, secret flavors and events. Before anyone else."}
-          </p>
+            <div className="grid grid-cols-5 gap-4">
+              <div className="relative col-span-3 min-h-[520px] overflow-hidden border border-[#F2E3C6]/10">
+                <Image src="/brew_process.png" alt="Proceso de brewing artesanal" fill sizes="(min-width: 1024px) 36vw, 60vw" className="object-cover" />
+              </div>
+              <div className="relative col-span-2 mt-16 min-h-[420px] overflow-hidden border border-[#F2E3C6]/10">
+                <Image src="/craft_beer.png" alt="Cerveza artesanal servida" fill sizes="(min-width: 1024px) 24vw, 40vw" className="object-cover" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-          >
-            <input
-              type="email"
-              placeholder={lang === "es" ? "tu@correo.com" : "your@email.com"}
-              className="flex-1 bg-[#0D0F14]/80 border border-[#D9A320]/30 text-[#F2E3C6] px-5 py-3.5 rounded-full focus:outline-none focus:border-[#D9A320] placeholder-[#F2E3C6]/20"
-            />
-            <button
-              type="submit"
-              className="bg-[#D9A320] text-[#0D0F14] font-bold px-7 py-3.5 rounded-full hover:bg-[#E86A17] transition-colors whitespace-nowrap"
-            >
-              {lang === "es" ? "Unirme" : "Join"}
-            </button>
-          </form>
+      <section className="border-y border-[#F2E3C6]/10 bg-[#11151A] px-5 py-24 sm:px-8 md:py-32 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-14 max-w-3xl">
+            <span className="section-label">{lang === "es" ? "Esencia" : "Essence"}</span>
+            <h2 className="font-display text-6xl leading-none text-[#F7E9C9] sm:text-8xl">
+              {lang === "es" ? "Lo que mueve cada lote." : "What moves every batch."}
+            </h2>
+          </div>
 
-          <p className="text-[#F2E3C6]/20 text-xs mt-4">
-            {lang === "es" ? "Sin spam. Solo cerveza." : "No spam. Just beer."}
-          </p>
+          <div className="grid grid-cols-1 gap-px bg-[#F2E3C6]/10 md:grid-cols-2 lg:grid-cols-4">
+            {values.map((value) => {
+              const Icon = value.icon;
+              return (
+                <div key={value.title.es} className="bg-[#11151A] p-8 transition-colors hover:bg-[#161C22]">
+                  <Icon className="mb-8 text-[#D9A320]" size={28} />
+                  <h3 className="font-display text-3xl text-[#F7E9C9]">{t(value.title)}</h3>
+                  <p className="mt-4 text-sm leading-7 text-[#F2E3C6]/58">{t(value.desc)}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative px-5 py-28 sm:px-8 md:py-40 lg:px-10">
+        <Image
+          src="/beer_glass.png"
+          alt="Copa de cerveza artesanal cinematográfica"
+          fill
+          sizes="100vw"
+          className="object-cover object-[52%_44%]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,10,14,0.96),rgba(8,10,14,0.78),rgba(8,10,14,0.4))]" />
+        <div className="relative mx-auto max-w-7xl">
+          <div className="max-w-2xl">
+            <Beer size={34} className="mb-7 text-[#D9A320]" />
+            <h2 className="font-display text-6xl leading-none text-[#F7E9C9] sm:text-8xl">
+              {lang === "es" ? "Entérate antes del próximo drop." : "Know before the next drop."}
+            </h2>
+            <p className="mt-6 text-xl leading-9 text-[#F2E3C6]/70">
+              {lang === "es"
+                ? "Preventas, sabores secretos y eventos. Solo lo importante, directo al correo."
+                : "Pre-sales, secret flavors and events. Only what matters, straight to your inbox."}
+            </p>
+
+            <form onSubmit={(e) => e.preventDefault()} className="mt-10 flex max-w-xl flex-col gap-3 sm:flex-row">
+              <input
+                type="email"
+                placeholder={lang === "es" ? "tu@correo.com" : "your@email.com"}
+                className="min-h-14 flex-1 border border-[#F2E3C6]/16 bg-[#080A0E]/70 px-5 text-sm text-[#F2E3C6] outline-none backdrop-blur-xl placeholder:text-[#F2E3C6]/30 focus:border-[#D9A320]"
+              />
+              <button
+                type="submit"
+                className="min-h-14 bg-[#D9A320] px-8 text-xs font-bold uppercase tracking-[0.22em] text-[#080A0E] hover:bg-[#F5C542]"
+              >
+                {lang === "es" ? "Unirme" : "Join"}
+              </button>
+            </form>
+          </div>
         </div>
       </section>
     </div>

@@ -2,12 +2,13 @@
 import { useLang } from "@/context/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const photos = [
-  { src: "https://images.unsplash.com/photo-1559526642-c3f001ea68ee?w=600&q=80", alt: "Brewing process" },
-  { src: "https://images.unsplash.com/photo-1510972527921-ce03766a1cf1?w=600&q=80", alt: "Craft beer" },
-  { src: "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=600&q=80", alt: "Beer bottles" },
-  { src: "https://images.unsplash.com/photo-1558642891-54be180ea339?w=600&q=80", alt: "Beer glass" },
+  { src: "/brew_process.png", alt: "Brewing process" },
+  { src: "/craft_beer.png", alt: "Craft beer" },
+  { src: "/beer_bottles.png", alt: "Beer bottles" },
+  { src: "/beer_glass.png", alt: "Beer glass" },
 ];
 
 export default function HistoriaPage() {
@@ -68,133 +69,185 @@ export default function HistoriaPage() {
   };
 
   return (
-    <div className="pt-16 md:pt-20">
+    <div className="pt-20">
       {/* Hero */}
-      <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden py-20">
+      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden py-32">
         <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1559526642-c3f001ea68ee?w=1200&q=70')" }}
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[2s] scale-105"
+          style={{ backgroundImage: "url('/manifesto_bg.png')" }}
         />
-        <div className="absolute inset-0 bg-[#0D0F14]/85" />
-        <div className="relative z-10 text-center px-4">
-          <p className="text-[#D9A320] text-xs uppercase tracking-widest mb-4">Tucán Brewery</p>
+        <div className="absolute inset-0 bg-[#0D0F14]/90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F14] via-transparent to-transparent" />
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="relative z-10 text-center px-4 max-w-4xl mx-auto"
+        >
+          <p className="text-[#D9A320] text-xs uppercase tracking-[0.3em] font-semibold mb-4">Tucán Brewery</p>
           <h1
-            className="text-6xl sm:text-8xl font-display text-[#F2E3C6]"
+            className="text-6xl sm:text-9xl font-display text-[#F2E3C6] tracking-wide"
             style={{ fontFamily: "'Bebas Neue', sans-serif" }}
           >
             {copy.title}
           </h1>
-          <p className="text-[#F2E3C6]/60 text-xl mt-4 max-w-xl mx-auto italic">
+          <div className="divider-gold max-w-xs mx-auto my-6" />
+          <p className="text-[#F2E3C6]/75 text-xl sm:text-2xl mt-4 max-w-2xl mx-auto italic font-light leading-relaxed">
             {copy.subtitle}
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Story text */}
-      <section className="py-20 px-4">
+      <section className="py-36 md:py-48 px-4 max-w-[1400px] mx-auto">
         <div className="max-w-3xl mx-auto">
-          <div className="space-y-6">
+          <div className="space-y-8">
             {copy.paragraphs.map((p, i) => (
-              <p
+              <motion.p
                 key={i}
-                className={`leading-relaxed ${
-                  i === 0 ? "text-xl text-[#F2E3C6]/90 font-medium" : "text-[#F2E3C6]/70"
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: Math.min(i * 0.1, 0.3) }}
+                className={`leading-relaxed text-lg sm:text-xl font-light ${
+                  i === 0 ? "text-2xl text-[#F2E3C6] font-medium leading-relaxed" : "text-[#F2E3C6]/75"
                 }`}
               >
                 {p}
-              </p>
+              </motion.p>
             ))}
           </div>
 
           {/* Dream callout */}
-          <div className="mt-16 p-8 rounded-2xl bg-gradient-to-br from-[#1D3515] to-[#3F6B2A]/30 border border-[#3F6B2A]/40 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mt-24 p-10 sm:p-12 rounded-3xl bg-gradient-to-br from-[#1D3515]/60 to-[#3F6B2A]/20 border border-[#3F6B2A]/40 text-center shadow-2xl relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-[#D9A320]/5 blur-2xl" />
             <h3
-              className="text-3xl font-display text-[#D9A320] mb-3"
+              className="text-4xl font-display text-[#D9A320] mb-4 tracking-wide"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
               {copy.dreamTitle}
             </h3>
-            <p className="text-[#F2E3C6]/80 text-lg italic">{copy.dreamText}</p>
-          </div>
+            <p className="text-[#F2E3C6]/90 text-xl italic font-light">{copy.dreamText}</p>
+          </motion.div>
         </div>
       </section>
 
       {/* Photo grid — Behind the brewing */}
-      <section className="py-16 px-4 bg-[#171A20]">
+      <section className="py-36 md:py-48 px-4 bg-[#171A20] border-y border-[#D9A320]/10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <span className="inline-block text-[#D9A320] text-xs uppercase tracking-[0.3em] font-semibold mb-4">Behind the scenes</span>
             <h2
-              className="text-4xl sm:text-5xl font-display text-[#F2E3C6]"
+              className="text-5xl sm:text-7xl font-display text-[#F2E3C6] tracking-wide"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
-              {lang === "es" ? "Behind the brewing" : "Behind the brewing"}
+              {lang === "es" ? "Detrás del barril" : "Behind the brewing"}
             </h2>
-            <p className="text-[#F2E3C6]/40 mt-2">
+            <div className="divider-gold max-w-sm mx-auto mt-5 mb-5" />
+            <p className="text-[#F2E3C6]/50 mt-4 text-lg font-light">
               {lang === "es" ? "El proceso real, sin filtros." : "The real process, unfiltered."}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {photos.map((photo, i) => (
-              <div
+              <motion.div
                 key={i}
-                className={`rounded-2xl overflow-hidden ${i === 0 || i === 3 ? "aspect-[3/4]" : "aspect-square"} group`}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className={`rounded-3xl overflow-hidden shadow-2xl border border-white/5 relative group ${
+                  i === 0 || i === 3 ? "aspect-[3/4]" : "aspect-square"
+                }`}
               >
                 <img
                   src={photo.src}
                   alt={photo.alt}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                  <p className="text-sm font-semibold text-[#F2E3C6] tracking-wide uppercase">{photo.alt}</p>
+                </div>
+              </motion.div>
             ))}
           </div>
-
-          <p className="text-center text-[#F2E3C6]/30 text-sm mt-6">
-            {lang === "es"
-              ? "📸 Fotos del proceso artesanal — próximamente actualizadas con imágenes reales"
-              : "📸 Brewing process photos — coming soon with real images"}
-          </p>
         </div>
       </section>
 
       {/* Micro-batch concepts */}
-      <section className="py-20 px-4">
+      <section className="py-36 md:py-48 px-4 max-w-[1400px] mx-auto">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <span className="inline-block text-[#D9A320] text-xs uppercase tracking-[0.3em] font-semibold mb-4">Esencia artesanal</span>
             <h2
-              className="text-4xl sm:text-5xl font-display text-[#D9A320]"
+              className="text-5xl sm:text-7xl font-display text-[#D9A320] tracking-wide"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
               {lang === "es" ? "El concepto de micro-lotes" : "The micro-batch concept"}
             </h2>
-          </div>
+            <div className="divider-gold max-w-sm mx-auto mt-6" />
+          </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {concepts[lang].map((c) => (
-              <div key={c.title} className="glass-card rounded-2xl p-6 card-glow text-center">
-                <div className="text-5xl mb-4">{c.icon}</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {concepts[lang].map((c, idx) => (
+              <motion.div
+                key={c.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="glass-card rounded-2xl p-8 card-glow text-center border-white/5"
+              >
+                <div className="text-5xl mb-6 animate-float" style={{ animationDuration: '6s', animationDelay: `${idx * 0.4}s` }}>{c.icon}</div>
                 <h3
-                  className="font-display text-xl text-[#D9A320] mb-2"
+                  className="font-display text-2xl text-[#D9A320] mb-3 tracking-wide"
                   style={{ fontFamily: "'Bebas Neue', sans-serif" }}
                 >
                   {c.title}
                 </h3>
-                <p className="text-[#F2E3C6]/50 text-sm">{c.desc}</p>
-              </div>
+                <p className="text-[#F2E3C6]/60 text-sm leading-relaxed">{c.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-4 text-center">
-        <Link
-          href="/cervezas"
-          className="inline-flex items-center gap-2 bg-[#D9A320] text-[#0D0F14] font-bold px-8 py-4 rounded-full hover:bg-[#E86A17] transition-all"
+      <section className="py-24 px-4 text-center bg-gradient-to-t from-black/30 to-transparent">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
-          {lang === "es" ? "Explorar las cervezas" : "Explore the beers"}
-          <ArrowRight size={18} />
-        </Link>
+          <Link
+            href="/cervezas"
+            className="group inline-flex items-center gap-3 bg-[#D9A320] text-[#0D0F14] font-bold px-9 py-5 rounded-full hover:bg-[#E86A17] hover:shadow-2xl hover:shadow-[#D9A320]/25 transition-all text-sm uppercase tracking-wider"
+          >
+            {lang === "es" ? "Explorar las cervezas" : "Explore the beers"}
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
       </section>
     </div>
   );

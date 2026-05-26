@@ -55,6 +55,7 @@ export default function Navigation() {
                 src="/logo.jpg"
                 alt="Tucán Brewery"
                 fill
+                sizes="48px"
                 className="object-contain rounded-full"
               />
             </div>

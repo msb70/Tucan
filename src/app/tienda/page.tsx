@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { STORE_ITEMS, WHATSAPP_NUMBER, type StoreItem } from "@/lib/data";
 import { MessageCircle, Package, ShoppingBag, Shirt } from "lucide-react";
+import { motion } from "framer-motion";
 
 type StoreTab = "all" | "beer" | "pack" | "merch";
 
@@ -109,86 +110,128 @@ export default function TiendaPage() {
   );
 
   return (
-    <div className="pt-24 pb-28 px-4 md:px-8">
+    <div className="pt-32 pb-44 px-4 md:px-8 max-w-[1400px] mx-auto">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-6">
-          <p className="text-[#D9A320] text-xs uppercase tracking-widest mb-4">Tucán Brewery</p>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <p className="text-[#D9A320] text-xs uppercase tracking-[0.3em] font-semibold mb-4">Tucán Brewery</p>
           <h1
-            className="text-6xl sm:text-8xl font-display text-[#F2E3C6]"
+            className="text-6xl sm:text-8xl font-display text-[#F2E3C6] tracking-wide"
             style={{ fontFamily: "'Bebas Neue', sans-serif" }}
           >
             {lang === "es" ? "Tienda" : "Shop"}
           </h1>
-          <p className="text-[#F2E3C6]/50 mt-3 max-w-md mx-auto">
+          <div className="divider-gold max-w-sm mx-auto mt-6 mb-6" />
+          <p className="text-[#F2E3C6]/60 mt-3 max-w-lg mx-auto text-lg font-light leading-relaxed">
             {lang === "es"
               ? "Cervezas, packs y merch. Los pedidos se hacen por WhatsApp — rápido, directo y humano."
               : "Beers, packs and merch. Orders placed via WhatsApp — quick, direct and human."}
           </p>
-        </div>
+        </motion.div>
 
         {/* WhatsApp CTA banner */}
-        <div className="mb-10 p-5 rounded-2xl bg-[#1D2415] border border-[#25D366]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#25D366]/20 flex items-center justify-center">
-              <MessageCircle size={20} className="text-[#25D366]" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="mb-14 p-6 sm:p-8 rounded-3xl bg-[#1D2415]/80 border border-[#25D366]/20 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#25D366]/15 flex items-center justify-center animate-pulse">
+              <MessageCircle size={24} className="text-[#25D366]" />
             </div>
-            <p className="text-[#F2E3C6]/70 text-sm">
-              {lang === "es"
-                ? "¿Tienes preguntas? Escríbenos directo por WhatsApp."
-                : "Have questions? Message us directly on WhatsApp."}
-            </p>
+            <div>
+              <p className="text-[#F2E3C6] font-semibold text-lg">
+                {lang === "es"
+                  ? "¿Tienes preguntas sobre los lotes?"
+                  : "Have questions about the batches?"}
+              </p>
+              <p className="text-[#F2E3C6]/60 text-sm font-light mt-0.5">
+                {lang === "es"
+                  ? "Escríbenos directo y coordinamos tu entrega en minutos."
+                  : "Message us directly and we will coordinate your delivery in minutes."}
+              </p>
+            </div>
           </div>
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waInquiry}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#25D366] text-white font-bold px-6 py-2.5 rounded-full text-sm hover:bg-[#20c05b] transition-colors whitespace-nowrap"
+            className="bg-[#25D366] text-white font-bold px-8 py-3.5 rounded-full text-xs hover:bg-[#20c05b] hover:shadow-xl hover:shadow-[#25D366]/15 transition-all whitespace-nowrap uppercase tracking-wider"
           >
             {lang === "es" ? "Chatear ahora" : "Chat now"}
           </a>
-        </div>
+        </motion.div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="flex flex-wrap gap-2.5 mb-12 justify-center"
+        >
           {tabs.map((t) => (
             <button
               key={t.value}
               onClick={() => setTab(t.value)}
-              className={`flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold tracking-wide uppercase transition-all ${
                 tab === t.value
-                  ? "bg-[#D9A320] text-[#0D0F14]"
-                  : "border border-[#D9A320]/20 text-[#F2E3C6]/60 hover:border-[#D9A320]/50"
+                  ? "bg-[#D9A320] text-[#0D0F14] shadow-lg shadow-[#D9A320]/20"
+                  : "border border-[#D9A320]/25 text-[#F2E3C6]/65 hover:border-[#D9A320] hover:text-[#D9A320] backdrop-blur-sm"
               }`}
             >
               {typeof t.icon === "string" ? t.icon : t.icon}
               {lang === "es" ? t.es : t.en}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Products grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
-          {filtered.map((item) => (
-            <StoreCard key={item.id} item={item} />
+        <motion.div
+          layout
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-24"
+        >
+          {filtered.map((item, idx) => (
+            <motion.div
+              layout
+              key={item.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.08, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="flex h-full"
+            >
+              <StoreCard item={item} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Pre-sale banner */}
-        <div className="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center bg-gradient-to-br from-[#1D3515] to-[#0D0F14] border border-[#D9A320]/20">
-          <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#D9A320]/5 blur-3xl" />
-          <span className="badge-limited text-sm px-4 py-1.5 rounded-full inline-block mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="relative overflow-hidden rounded-3xl p-10 sm:p-16 text-center bg-gradient-to-br from-[#1D3515]/60 to-[#0D0F14] border border-[#D9A320]/20 shadow-2xl"
+        >
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-[#D9A320]/5 blur-3xl opacity-60" />
+          <span className="badge-limited text-xs px-5 py-2 rounded-full inline-block mb-6 shadow-md shadow-black/10">
             {lang === "es" ? "Preventa exclusiva" : "Exclusive pre-sale"}
           </span>
           <h2
-            className="text-4xl sm:text-5xl font-display text-[#F2E3C6] mb-4"
+            className="text-5xl sm:text-6xl font-display text-[#F2E3C6] mb-4 tracking-wide"
             style={{ fontFamily: "'Bebas Neue', sans-serif" }}
           >
             {lang === "es"
               ? "Reserva el próximo lote"
               : "Reserve the next batch"}
           </h2>
-          <p className="text-[#F2E3C6]/60 mb-8 max-w-md mx-auto">
+          <p className="text-[#F2E3C6]/75 mb-10 max-w-md mx-auto text-lg font-light leading-relaxed">
             {lang === "es"
               ? "Suscríbete para recibir acceso prioritario a los próximos lotes antes de que se agoten."
               : "Subscribe to get priority access to upcoming batches before they sell out."}
@@ -197,12 +240,12 @@ export default function TiendaPage() {
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lang === "es" ? "Quiero estar en la lista de preventa de Tucán Brewery" : "I want to be on the Tucán Brewery pre-sale list")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#D9A320] text-[#0D0F14] font-bold px-8 py-4 rounded-full hover:bg-[#E86A17] transition-all"
+            className="inline-flex items-center gap-3 bg-[#D9A320] text-[#0D0F14] font-bold px-9 py-5 rounded-full hover:bg-[#E86A17] hover:shadow-2xl hover:shadow-[#D9A320]/25 transition-all text-xs uppercase tracking-wider"
           >
             <MessageCircle size={18} />
             {lang === "es" ? "Quiero acceso prioritario" : "I want priority access"}
           </a>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
