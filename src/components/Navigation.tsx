@@ -1,0 +1,145 @@
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
+import { useLang } from "@/context/LanguageContext";
+
+const navLinks = {
+  es: [
+    { href: "/", label: "Inicio" },
+    { href: "/cervezas", label: "Cervezas" },
+    { href: "/historia", label: "Historia" },
+    { href: "/laboratorio", label: "El Laboratorio" },
+    { href: "/tienda", label: "Tienda" },
+    { href: "/eventos", label: "Eventos" },
+    { href: "/contacto", label: "Contacto" },
+  ],
+  en: [
+    { href: "/", label: "Home" },
+    { href: "/cervezas", label: "Beers" },
+    { href: "/historia", label: "Our Story" },
+    { href: "/laboratorio", label: "The Lab" },
+    { href: "/tienda", label: "Shop" },
+    { href: "/eventos", label: "Events" },
+    { href: "/contacto", label: "Contact" },
+  ],
+};
+
+export default function Navigation() {
+  const { lang, setLang } = useLang();
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const links = navLinks[lang];
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#0D0F14]/95 backdrop-blur-md shadow-2xl border-b border-[#D9A320]/20"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-10 h-10 md:w-12 md:h-12">
+              <Image
+                src="/logo.jpg"
+                alt="Tucán Brewery"
+                fill
+                className="object-contain rounded-full"
+              />
+            </div>
+            <div className="hidden sm:block">
+              <span
+                className="font-display text-xl md:text-2xl text-shimmer"
+                style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              >
+                Tucán Brewery
+              </span>
+              <p className="text-xs text-[#D9A320]/60 -mt-1 tracking-widest uppercase">
+                Natures Beer · Panama
+              </p>
+            </div>
+          </Link>
+
+          {/* Desktop nav */}
+          <div className="hidden lg:flex items-center gap-1">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="px-3 py-2 text-sm font-medium text-[#F2E3C6]/80 hover:text-[#D9A320] relative group transition-colors"
+              >
+                {link.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D9A320] group-hover:w-full transition-all duration-300" />
+              </Link>
+            ))}
+          </div>
+
+          {/* Right controls */}
+          <div className="flex items-center gap-3">
+            {/* Language toggle */}
+            <button
+              onClick={() => setLang(lang === "es" ? "en" : "es")}
+              className="text-xs font-medium border border-[#D9A320]/40 text-[#D9A320] hover:bg-[#D9A320] hover:text-[#0D0F14] px-3 py-1.5 rounded-full transition-all"
+            >
+              {lang === "es" ? "EN" : "ES"}
+            </button>
+
+            {/* CTA button */}
+            <Link
+              href="/tienda"
+              className="hidden sm:block text-xs font-semibold bg-[#D9A320] text-[#0D0F14] px-4 py-2 rounded-full hover:bg-[#E86A17] hover:shadow-lg hover:shadow-[#D9A320]/20 transition-all"
+            >
+              {lang === "es" ? "Comprar" : "Shop"}
+            </Link>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="lg:hidden text-[#F2E3C6] p-2"
+            >
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="lg:hidden bg-[#0D0F14]/98 backdrop-blur-xl border-t border-[#D9A320]/20">
+          <div className="px-4 py-6 space-y-1">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="block px-4 py-3 text-[#F2E3C6]/80 hover:text-[#D9A320] hover:bg-[#D9A320]/5 rounded-lg transition-colors font-medium"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="pt-4">
+              <Link
+                href="/tienda"
+                onClick={() => setMenuOpen(false)}
+                className="block w-full text-center bg-[#D9A320] text-[#0D0F14] font-bold py-3 rounded-xl hover:bg-[#E86A17] transition-colors"
+              >
+                {lang === "es" ? "Ir a la Tienda" : "Go to Shop"}
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}
