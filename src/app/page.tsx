@@ -145,7 +145,7 @@ export default function HomePage() {
 
             <h1 className="font-display text-[4.65rem] leading-[0.8] text-[#F7E9C9] drop-shadow-[0_18px_40px_rgba(0,0,0,0.65)] sm:text-[8rem] lg:text-[9rem] xl:text-[10rem]">
               <span className="block">{copy.h1a}</span>
-              <span className="block text-shimmer">{copy.h1b}</span>
+              <span className="block text-[#D9A320]">{copy.h1b}</span>
             </h1>
 
             <p className="mt-8 max-w-2xl text-lg leading-8 text-[#F2E3C6]/78 sm:text-2xl sm:leading-10">
@@ -168,7 +168,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-12 inline-flex max-w-full items-center gap-3 border-l-2 border-[#A92118] bg-[#080A0E]/58 px-5 py-4 text-sm text-[#F2E3C6]/82 backdrop-blur-xl">
+            <div className="mt-12 inline-flex max-w-full items-center gap-3 border border-[#A92118]/45 bg-[#080A0E]/58 px-5 py-4 text-sm text-[#F2E3C6]/82 backdrop-blur-xl">
               <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#e74c3c] shadow-[0_0_22px_rgba(231,76,60,0.8)]" />
               <span>
                 {lang === "es"
@@ -185,19 +185,26 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative -mt-16 z-20 px-5 sm:px-8 lg:px-10">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 border border-[#F2E3C6]/10 bg-[#11151A]/88 backdrop-blur-2xl md:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label.es} className="border-[#F2E3C6]/10 px-5 py-8 text-center even:border-l md:border-l md:first:border-l-0">
-              <p className="font-display text-5xl leading-none text-gold-gradient sm:text-7xl">
-                <AnimatedCounter to={s.value} />
-                {s.suffix}
-              </p>
-              <p className="mt-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#F2E3C6]/48">
-                {t(s.label)}
-              </p>
-            </div>
-          ))}
+      <section className="relative z-20 border-y border-[#D9A320]/18 bg-[#0D1015]">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          <div className="flex flex-wrap">
+            {stats.map((s, i) => (
+              <div
+                key={s.label.es}
+                className={`flex items-baseline gap-2.5 py-5 pr-8 ${
+                  i > 0 ? "pl-8 border-l border-[#F2E3C6]/10" : ""
+                }`}
+              >
+                <span className="font-display text-3xl text-[#D9A320] sm:text-4xl">
+                  <AnimatedCounter to={s.value} />
+                  {s.suffix}
+                </span>
+                <span className="text-[0.67rem] font-semibold uppercase tracking-[0.22em] text-[#F2E3C6]/38">
+                  {t(s.label)}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -230,7 +237,7 @@ export default function HomePage() {
                     i === 0
                       ? "font-display text-5xl leading-[0.95] text-[#F7E9C9] sm:text-7xl"
                       : i === 1
-                        ? "font-display text-4xl leading-tight text-gold-gradient sm:text-6xl"
+                        ? "font-display text-4xl leading-tight text-[#D9A320] sm:text-6xl"
                         : "max-w-2xl text-xl leading-9 text-[#F2E3C6]/68"
                   }
                 >
@@ -332,17 +339,23 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-px bg-[#F2E3C6]/10 md:grid-cols-2 lg:grid-cols-4">
-            {values.map((value) => {
-              const Icon = value.icon;
-              return (
-                <div key={value.title.es} className="bg-[#11151A] p-8 transition-colors hover:bg-[#161C22]">
-                  <Icon className="mb-8 text-[#D9A320]" size={28} />
-                  <h3 className="font-display text-3xl text-[#F7E9C9]">{t(value.title)}</h3>
-                  <p className="mt-4 text-sm leading-7 text-[#F2E3C6]/58">{t(value.desc)}</p>
-                </div>
-              );
-            })}
+          <div className="grid grid-cols-1 border border-[#F2E3C6]/10 md:grid-cols-2">
+            {values.map((value, i) => (
+              <div
+                key={value.title.es}
+                className={`p-10 transition-colors hover:bg-[#13181F] ${
+                  i % 2 === 0 ? "md:border-r border-[#F2E3C6]/10" : ""
+                } ${
+                  i < 2 ? "border-b border-[#F2E3C6]/10" : ""
+                }`}
+              >
+                <p className="font-display text-[5.5rem] leading-none text-[#D9A320]/14 mb-5 -ml-1">
+                  0{i + 1}
+                </p>
+                <h3 className="font-display text-3xl text-[#F7E9C9] -mt-4">{t(value.title)}</h3>
+                <p className="mt-4 max-w-xs text-sm leading-7 text-[#F2E3C6]/55">{t(value.desc)}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

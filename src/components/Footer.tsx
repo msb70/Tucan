@@ -28,7 +28,7 @@ export default function Footer() {
                 <Image src="/logo.jpg" alt="Tucán Brewery" fill sizes="48px" className="object-contain rounded-full" />
               </div>
               <div>
-                <p className="font-display text-2xl text-shimmer" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+                <p className="font-display text-2xl text-gold" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                   Tucán Brewery
                 </p>
                 <p className="text-xs text-[#D9A320]/60 tracking-widest uppercase">Natures Beer · Panama</p>
@@ -104,11 +104,11 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder={lang === "es" ? "tu@correo.com" : "your@email.com"}
-                className="bg-[#171A20] border border-[#D9A320]/20 text-[#F2E3C6] text-sm px-4 py-2.5 rounded-lg focus:outline-none focus:border-[#D9A320]/60 placeholder-[#F2E3C6]/20"
+                className="bg-[#171A20] border border-[#D9A320]/20 text-[#F2E3C6] text-sm px-4 py-2.5 focus:outline-none focus:border-[#D9A320]/60 placeholder-[#F2E3C6]/20"
               />
               <button
                 type="submit"
-                className="bg-[#D9A320] text-[#0D0F14] font-semibold text-sm py-2.5 px-4 rounded-lg hover:bg-[#E86A17] transition-colors"
+                className="bg-[#D9A320] text-[#0D0F14] font-bold text-xs py-2.5 px-4 uppercase tracking-[0.14em] hover:bg-[#E86A17] transition-colors"
               >
                 {lang === "es" ? "Suscribirme" : "Subscribe"}
               </button>

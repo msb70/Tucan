@@ -64,7 +64,7 @@ export default function EventosPage() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="relative h-72 rounded-3xl overflow-hidden mb-24 border border-white/5 shadow-2xl group"
+          className="relative h-72 overflow-hidden mb-24 border border-[#F2E3C6]/08 shadow-2xl group"
         >
           <Image
             src="/beer_glass.png"
@@ -100,12 +100,12 @@ export default function EventosPage() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               key={event.id}
-              className="glass-card rounded-3xl p-8 card-glow border-white/5"
+              className="bg-[#0D1015] border border-[#F2E3C6]/08 p-8 transition-colors hover:border-[#D9A320]/25"
             >
               <div className="flex flex-col sm:flex-row sm:items-start gap-6">
                 {/* Date block */}
                 <div className="shrink-0 w-24 text-center">
-                  <div className="bg-[#D9A320] rounded-2xl p-4 shadow-lg shadow-[#D9A320]/10">
+                  <div className="bg-[#D9A320] p-4 shadow-lg shadow-[#D9A320]/10">
                     <p
                       className="font-display text-4xl text-[#0D0F14] leading-none mb-1"
                       style={{ fontFamily: "'Bebas Neue', sans-serif" }}
@@ -125,7 +125,7 @@ export default function EventosPage() {
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-4">
                     <span
-                      className={`text-xs px-3.5 py-1.5 rounded-full border font-bold uppercase tracking-wider ${typeColors[event.type]}`}
+                      className={`text-xs px-3.5 py-1.5 border font-bold uppercase tracking-wider ${typeColors[event.type]}`}
                     >
                       {typeLabels[event.type][lang]}
                     </span>
@@ -178,7 +178,7 @@ export default function EventosPage() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-3.5 px-6 rounded-2xl hover:bg-[#20c05b] hover:shadow-xl hover:shadow-[#25D366]/15 transition-all text-sm whitespace-nowrap uppercase tracking-wider"
+                    className="flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-3.5 px-6 hover:bg-[#20c05b] transition-all text-sm whitespace-nowrap uppercase tracking-wider"
                   >
                     <MessageCircle size={18} />
                     {lang === "es" ? "Me apunto" : "I'm in"}
@@ -195,7 +195,7 @@ export default function EventosPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="p-10 sm:p-14 rounded-3xl bg-[#171A20] border border-[#D9A320]/15 text-center relative overflow-hidden shadow-2xl"
+          className="p-10 sm:p-14 bg-[#11151A] border border-[#D9A320]/18 text-center relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-32 h-32 rounded-full bg-[#D9A320]/5 blur-2xl" />
           <Tag size={32} className="mx-auto text-[#D9A320] mb-6 animate-pulse" />
@@ -218,7 +218,7 @@ export default function EventosPage() {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-[#D9A320] text-[#0D0F14] font-bold px-9 py-5 rounded-full hover:bg-[#E86A17] hover:shadow-2xl hover:shadow-[#D9A320]/25 transition-all text-sm uppercase tracking-wider"
+            className="inline-flex items-center gap-3 bg-[#D9A320] text-[#0D0F14] font-bold px-9 py-5 hover:bg-[#E86A17] transition-all text-sm uppercase tracking-wider"
           >
             <MessageCircle size={18} />
             {lang === "es" ? "Hablemos" : "Let's talk"}

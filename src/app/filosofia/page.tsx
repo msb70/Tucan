@@ -65,7 +65,7 @@ export default function FilosofiaPage() {
         {/* Vision + Mission */}
         <div className="grid md:grid-cols-2 gap-8 mb-20">
           {[copy.vision, copy.mision].map((item) => (
-            <div key={item.label} className="glass-card rounded-2xl p-8 card-glow">
+            <div key={item.label} className="bg-[#0D1015] border border-[#F2E3C6]/08 p-8 transition-colors hover:border-[#D9A320]/25">
               <span
                 className="text-xs font-semibold text-[#D9A320] uppercase tracking-widest"
               >
@@ -93,7 +93,7 @@ export default function FilosofiaPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {copy.values.map((v) => (
-            <div key={v.title} className="glass-card rounded-2xl p-6 card-glow">
+            <div key={v.title} className="bg-[#0D1015] border border-[#F2E3C6]/08 p-6 transition-colors hover:border-[#D9A320]/25">
               <div className="text-4xl mb-4">{v.icon}</div>
               <h3
                 className="font-display text-2xl text-[#D9A320] mb-2"
@@ -110,7 +110,7 @@ export default function FilosofiaPage() {
         <div className="mt-20 text-center">
           <div className="divider-gold mb-10" />
           <blockquote
-            className="text-3xl sm:text-5xl font-display text-shimmer italic"
+            className="text-3xl sm:text-5xl font-display text-[#D9A320] italic"
             style={{ fontFamily: "'Bebas Neue', sans-serif" }}
           >
             {lang === "es"

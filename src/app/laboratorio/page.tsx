@@ -105,7 +105,7 @@ export default function LaboratorioPage() {
               className="object-cover"
             />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,10,14,0.78),rgba(8,10,14,0.2)),linear-gradient(180deg,rgba(8,10,14,0.05),rgba(8,10,14,0.86))]" />
-            <div className="absolute bottom-8 left-8 max-w-lg border-l-2 border-[#D9A320] bg-[#080A0E]/72 p-6 backdrop-blur-xl">
+            <div className="absolute bottom-8 left-8 max-w-lg border border-[#D9A320]/40 bg-[#080A0E]/72 p-6 backdrop-blur-xl">
               <div className="mb-4 flex items-center gap-3 text-[#D9A320]">
                 <Microscope size={24} />
                 <span className="text-xs font-bold uppercase tracking-[0.24em]">

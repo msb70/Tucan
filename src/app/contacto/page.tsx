@@ -93,9 +93,9 @@ export default function ContactoPage() {
                   href={ch.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 glass-card rounded-2xl p-5 card-glow group"
+                  className="flex items-center gap-4 bg-[#0D1015] border border-[#F2E3C6]/08 p-5 transition-colors hover:border-[#D9A320]/30 group"
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${ch.color} flex items-center justify-center text-white`}>
+                  <div className={`w-12 h-12 bg-gradient-to-br ${ch.color} flex items-center justify-center text-white shrink-0`}>
                     {ch.icon}
                   </div>
                   <div>
@@ -109,7 +109,7 @@ export default function ContactoPage() {
             </div>
 
             {/* Location */}
-            <div className="glass-card rounded-2xl p-6">
+            <div className="bg-[#0D1015] border border-[#F2E3C6]/08 p-6">
               <div className="flex items-center gap-3 mb-3">
                 <MapPin size={20} className="text-[#D9A320]" />
                 <h3
@@ -137,7 +137,7 @@ export default function ContactoPage() {
             </h2>
 
             {submitted ? (
-              <div className="glass-card rounded-2xl p-8 text-center">
+              <div className="bg-[#0D1015] border border-[#F2E3C6]/08 p-8 text-center">
                 <div className="text-6xl mb-4">🍺</div>
                 <h3
                   className="text-3xl font-display text-[#D9A320] mb-2"
@@ -168,7 +168,7 @@ export default function ContactoPage() {
                       required
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full bg-[#171A20] border border-[#D9A320]/20 text-[#F2E3C6] px-4 py-3 rounded-xl focus:outline-none focus:border-[#D9A320]/60 placeholder-[#F2E3C6]/20 text-sm"
+                      className="w-full bg-[#171A20] border border-[#D9A320]/20 text-[#F2E3C6] px-4 py-3 focus:outline-none focus:border-[#D9A320]/60 placeholder-[#F2E3C6]/20 text-sm"
                       placeholder={lang === "es" ? "Tu nombre" : "Your name"}
                     />
                   </div>
@@ -181,7 +181,7 @@ export default function ContactoPage() {
                       required
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full bg-[#171A20] border border-[#D9A320]/20 text-[#F2E3C6] px-4 py-3 rounded-xl focus:outline-none focus:border-[#D9A320]/60 placeholder-[#F2E3C6]/20 text-sm"
+                      className="w-full bg-[#171A20] border border-[#D9A320]/20 text-[#F2E3C6] px-4 py-3 focus:outline-none focus:border-[#D9A320]/60 placeholder-[#F2E3C6]/20 text-sm"
                       placeholder="tu@correo.com"
                     />
                   </div>
@@ -197,7 +197,7 @@ export default function ContactoPage() {
                         key={topic}
                         type="button"
                         onClick={() => setForm({ ...form, subject: topic })}
-                        className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
+                        className={`text-xs px-3 py-1.5 border transition-all uppercase tracking-[0.1em] font-semibold ${
                           form.subject === topic
                             ? "bg-[#D9A320] text-[#0D0F14] border-[#D9A320]"
                             : "border-[#D9A320]/20 text-[#F2E3C6]/50 hover:border-[#D9A320]/50"
@@ -218,7 +218,7 @@ export default function ContactoPage() {
                     rows={5}
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full bg-[#171A20] border border-[#D9A320]/20 text-[#F2E3C6] px-4 py-3 rounded-xl focus:outline-none focus:border-[#D9A320]/60 placeholder-[#F2E3C6]/20 text-sm resize-none"
+                    className="w-full bg-[#171A20] border border-[#D9A320]/20 text-[#F2E3C6] px-4 py-3 focus:outline-none focus:border-[#D9A320]/60 placeholder-[#F2E3C6]/20 text-sm resize-none"
                     placeholder={
                       lang === "es"
                         ? "Cuéntanos... ¿qué tienes en mente?"
@@ -229,7 +229,7 @@ export default function ContactoPage() {
 
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-4 rounded-xl hover:bg-[#20c05b] transition-all"
+                  className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-4 hover:bg-[#20c05b] transition-all uppercase tracking-[0.14em] text-sm"
                 >
                   <Send size={18} />
                   {lang === "es" ? "Enviar por WhatsApp" : "Send via WhatsApp"}

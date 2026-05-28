@@ -59,7 +59,7 @@ export default function HistoriaPage() {
             <div className="mt-10 grid grid-cols-3 gap-px bg-[#F2E3C6]/12">
               {timeline.map((item) => (
                 <div key={item.value} className="bg-[#101419] p-5">
-                  <p className="font-display text-4xl text-gold-gradient">{item.value}</p>
+                  <p className="font-display text-4xl text-[#D9A320]">{item.value}</p>
                   <p className="mt-2 text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-[#F2E3C6]/48">{item.label}</p>
                 </div>
               ))}
@@ -77,7 +77,7 @@ export default function HistoriaPage() {
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,14,0.04),rgba(8,10,14,0.82)),radial-gradient(circle_at_50%_25%,rgba(217,163,32,0.25),transparent_36%)]" />
             <div className="absolute bottom-0 left-0 right-0 p-8">
-              <div className="max-w-md border-l-2 border-[#D9A320] bg-[#080A0E]/70 p-5 backdrop-blur-xl">
+              <div className="max-w-md border border-[#D9A320]/40 bg-[#080A0E]/70 p-5 backdrop-blur-xl">
                 <div className="mb-3 flex items-center gap-2 text-[#D9A320]">
                   <Camera size={18} />
                   <span className="text-xs font-bold uppercase tracking-[0.22em]">

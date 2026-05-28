@@ -18,7 +18,7 @@ export default function BeerCard({ beer, featured = false }: BeerCardProps) {
   return (
     <Link href={`/cervezas/${beer.id}`} className="block h-full">
       <div
-        className={`card-glow glass-card h-full overflow-hidden rounded-lg cursor-pointer group ${
+        className={`solid-card h-full overflow-hidden cursor-pointer group ${
           featured ? "h-full" : ""
         }`}
       >

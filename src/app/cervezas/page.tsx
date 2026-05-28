@@ -40,7 +40,7 @@ export default function CervezasPage() {
           </p>
 
           {/* Active batch banner */}
-          <div className="inline-flex items-center gap-2 mt-6 bg-[#A92118]/20 border border-[#A92118]/40 px-4 py-2 rounded-full">
+          <div className="inline-flex items-center gap-2 mt-6 bg-[#A92118]/16 border border-[#A92118]/40 px-4 py-2">
             <span className="w-2 h-2 rounded-full bg-[#A92118] animate-pulse" />
             <span className="text-sm text-[#F2E3C6]/80">
               {lang === "es"
@@ -106,7 +106,7 @@ export default function CervezasPage() {
             {EXTINCT_BEERS.map((beer) => (
               <div
                 key={beer.id}
-                className={`glass-card rounded-xl p-5 opacity-50 flex items-center gap-4 w-full sm:w-auto`}
+                className={`bg-[#0D1015] border border-[#F2E3C6]/07 p-5 opacity-50 flex items-center gap-4 w-full sm:w-auto`}
               >
                 <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${beer.gradient} flex items-center justify-center text-2xl`}>
                   {beer.emoji}

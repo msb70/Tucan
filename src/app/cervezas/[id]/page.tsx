@@ -48,7 +48,7 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
         {/* Main content */}
         <div className="grid lg:grid-cols-2 gap-12 items-start mb-20">
           {/* Visual */}
-          <div className={`rounded-3xl bg-gradient-to-br ${beer.gradient} aspect-square flex items-center justify-center relative overflow-hidden`}>
+          <div className={`bg-gradient-to-br ${beer.gradient} aspect-square flex items-center justify-center relative overflow-hidden`}>
             <div className="absolute inset-0 opacity-20">
               <div className="absolute top-10 right-10 w-32 h-32 rounded-full bg-white/20 blur-2xl" />
               <div className="absolute bottom-10 left-10 w-24 h-24 rounded-full bg-black/20 blur-2xl" />
@@ -57,21 +57,21 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
 
             {/* Badges */}
             <div className="absolute top-6 left-6">
-              <span className="badge-batch text-sm px-3 py-1.5 rounded-full font-bold">
+              <span className="badge-batch text-sm px-3 py-1.5 font-bold">
                 Batch #{beer.batchCode}
               </span>
             </div>
 
             {beer.availability === "never-again" && (
               <div className="absolute top-6 right-6">
-                <span className="badge-limited text-sm px-3 py-1.5 rounded-full">
+                <span className="badge-limited text-sm px-3 py-1.5">
                   R.I.P
                 </span>
               </div>
             )}
             {beer.availability === "last-bottles" && (
               <div className="absolute top-6 right-6">
-                <span className="badge-limited text-sm px-3 py-1.5 rounded-full animate-pulse">
+                <span className="badge-limited text-sm px-3 py-1.5 animate-pulse">
                   {lang === "es" ? "¡Últimas!" : "Last ones!"}
                 </span>
               </div>
@@ -91,7 +91,7 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
             <p className="text-[#F2E3C6]/60 text-lg italic mb-6">{t(beer.tagline)}</p>
 
             {/* Story */}
-            <div className="mb-6 p-5 rounded-xl bg-[#171A20] border-l-4 border-[#D9A320]">
+            <div className="mb-6 p-5 bg-[#0D1015] border border-[#D9A320]/25">
               <p className="text-[#F2E3C6]/80 leading-relaxed">{t(beer.story)}</p>
             </div>
 
@@ -104,7 +104,7 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
                 {beer.sensoryProfile.map((s) => (
                   <span
                     key={s}
-                    className="px-3 py-1 rounded-full border border-[#D9A320]/30 text-[#D9A320]/80 text-sm"
+                    className="px-3 py-1 border border-[#D9A320]/30 text-[#D9A320]/80 text-sm"
                   >
                     {s}
                   </span>
@@ -128,7 +128,7 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
             </div>
 
             {/* Tech specs */}
-            <div className="grid grid-cols-3 gap-4 mb-6 p-4 rounded-xl bg-[#171A20]">
+            <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-[#0D1015] border border-[#F2E3C6]/07">
               {[
                 { label: "ABV", value: `${beer.abv}%` },
                 { label: "IBU", value: `${beer.ibu}` },
@@ -171,26 +171,26 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-4 rounded-xl hover:bg-[#20c05b] transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-4 hover:bg-[#20c05b] transition-all uppercase tracking-[0.12em] text-sm"
                 >
                   <MessageCircle size={20} />
                   {lang === "es" ? `Pedir por WhatsApp · $${beer.price}` : `Order on WhatsApp · $${beer.price}`}
                 </a>
               ) : (
-                <div className="flex-1 flex items-center justify-center gap-2 bg-[#171A20] text-[#F2E3C6]/30 font-bold py-4 rounded-xl border border-[#F2E3C6]/10 cursor-not-allowed">
+                <div className="flex-1 flex items-center justify-center gap-2 bg-[#0D1015] text-[#F2E3C6]/30 font-bold py-4 border border-[#F2E3C6]/10 cursor-not-allowed">
                   {availLabel}
                 </div>
               )}
               <Link
                 href="/cervezas"
-                className="flex items-center justify-center gap-2 border border-[#D9A320]/30 text-[#D9A320] px-6 py-4 rounded-xl hover:bg-[#D9A320]/10 transition-all"
+                className="flex items-center justify-center gap-2 border border-[#D9A320]/30 text-[#D9A320] px-6 py-4 hover:bg-[#D9A320]/08 transition-all"
               >
                 {lang === "es" ? "Ver más" : "See more"}
               </Link>
             </div>
 
             {/* Ingredients */}
-            <div className="mt-6 p-4 rounded-xl bg-[#0D0F14]">
+            <div className="mt-6 p-4 bg-[#080A0E] border border-[#F2E3C6]/06">
               <p className="text-xs uppercase tracking-widest text-[#F2E3C6]/30 mb-3">
                 {lang === "es" ? "Ingredientes" : "Ingredients"}
               </p>
@@ -198,7 +198,7 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
                 {beer.ingredients[lang].map((ing) => (
                   <span
                     key={ing}
-                    className="text-xs px-2.5 py-1 rounded-full bg-[#1D3515] text-[#3F6B2A]"
+                    className="text-xs px-2.5 py-1 bg-[#1D3515] text-[#3F6B2A]"
                   >
                     {ing}
                   </span>
@@ -219,8 +219,8 @@ export default function BeerDetailPage({ params }: { params: Promise<{ id: strin
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {otherBeers.map((b) => (
               <Link key={b.id} href={`/cervezas/${b.id}`}>
-                <div className="glass-card rounded-2xl p-4 flex items-center gap-4 card-glow">
-                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${b.gradient} flex items-center justify-center text-2xl shrink-0`}>
+                <div className="bg-[#0D1015] border border-[#F2E3C6]/08 p-4 flex items-center gap-4 transition-colors hover:border-[#D9A320]/30">
+                  <div className={`w-14 h-14 bg-gradient-to-br ${b.gradient} flex items-center justify-center text-2xl shrink-0`}>
                     {b.emoji}
                   </div>
                   <div>

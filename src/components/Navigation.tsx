@@ -65,7 +65,7 @@ export default function Navigation() {
             </div>
             <div className="hidden sm:block">
               <span
-                className="font-display text-xl md:text-2xl text-shimmer"
+                className="font-display text-xl md:text-2xl text-gold"
                 style={{ fontFamily: "'Bebas Neue', sans-serif" }}
               >
                 Tucán Brewery
@@ -101,7 +101,7 @@ export default function Navigation() {
             {/* Language toggle */}
             <button
               onClick={() => setLang(lang === "es" ? "en" : "es")}
-              className="text-xs font-medium border border-[#D9A320]/40 text-[#D9A320] hover:bg-[#D9A320] hover:text-[#0D0F14] px-3 py-1.5 rounded-full transition-all"
+              className="text-xs font-semibold border border-[#D9A320]/40 text-[#D9A320] hover:bg-[#D9A320] hover:text-[#0D0F14] px-3 py-1.5 uppercase tracking-[0.12em] transition-all"
             >
               {lang === "es" ? "EN" : "ES"}
             </button>
@@ -109,7 +109,7 @@ export default function Navigation() {
             {/* CTA button */}
             <Link
               href="/tienda"
-              className="hidden sm:block text-xs font-semibold bg-[#D9A320] text-[#0D0F14] px-4 py-2 rounded-full hover:bg-[#E86A17] hover:shadow-lg hover:shadow-[#D9A320]/20 transition-all"
+              className="hidden sm:block text-xs font-bold bg-[#D9A320] text-[#0D0F14] px-5 py-2 uppercase tracking-[0.14em] hover:bg-[#E86A17] transition-all"
             >
               {lang === "es" ? "Comprar" : "Shop"}
             </Link>
@@ -134,7 +134,7 @@ export default function Navigation() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="block px-4 py-3 text-[#F2E3C6]/80 hover:text-[#D9A320] hover:bg-[#D9A320]/5 rounded-lg transition-colors font-medium"
+                className="block px-4 py-3 text-[#F2E3C6]/80 hover:text-[#D9A320] hover:bg-[#D9A320]/5 transition-colors font-medium border-b border-[#F2E3C6]/05"
               >
                 {link.label}
               </Link>
@@ -143,7 +143,7 @@ export default function Navigation() {
               <Link
                 href="/tienda"
                 onClick={() => setMenuOpen(false)}
-                className="block w-full text-center bg-[#D9A320] text-[#0D0F14] font-bold py-3 rounded-xl hover:bg-[#E86A17] transition-colors"
+                className="block w-full text-center bg-[#D9A320] text-[#0D0F14] font-bold py-3 uppercase tracking-[0.16em] text-sm hover:bg-[#E86A17] transition-colors"
               >
                 {lang === "es" ? "Ir a la Tienda" : "Go to Shop"}
               </Link>
